@@ -9,7 +9,6 @@
 [![Azure](https://img.shields.io/badge/Microsoft_Azure-0089D0?style=for-the-badge&logo=microsoft-azure&logoColor=white)](https://azure.microsoft.com/)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
 
-[![GitHub stars](https://img.shields.io/github/stars/nathangtg/agent-hub?style=social)](https://github.com/nathangtg/agent-hub/stargazers)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
@@ -101,7 +100,7 @@ graph TB
     F --> G[Response Synthesis]
     G --> H[User Response]
     
-    subgraph "Smart Agent Selection"
+    subgraph "Smart Agent Selection"f
         I[GitHub Keywords → GitHub Agent]
         J[Security Keywords → Security Agent]
         K[Cloud Keywords → Azure Agent]
@@ -304,9 +303,7 @@ graph LR
 | **🤖 AI Agents** | 9 | Specialized agents for different domains |
 | **🔧 Integrated Tools** | 50+ | MCP tools across security, DevOps, and data |
 | **⚡ Response Time** | <2s | Average agent response time |
-| **🔒 Security Scans** | 1M+ | Vulnerabilities identified and reported |
-| **📈 Uptime** | 99.9% | Platform availability SLA |
-| **🌐 API Endpoints** | 100+ | RESTful API surface area |
+| **🔒 Security Scans** | 20+ | Vulnerabilities metrics used and identified and reported |
 
 </div>
 
@@ -818,5 +815,3 @@ graph TB
 ```
 
 ---
-
-**Happy coding! 🚀**
