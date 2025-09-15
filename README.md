@@ -24,6 +24,64 @@ The Agent Hub platform consists of three main components:
 - **🚀 Agent Hub API (Backend)**: FastAPI-powered multi-agent orchestration layer with Azure OpenAI integration
 - **🔧 MCP Tools Server**: Extensible MCP server providing utility tools for text processing, security analysis, PDF operations, and web scraping
 
+### 🤖 AI Agent Ecosystem
+
+The platform features a sophisticated multi-agent architecture with specialized AI agents:
+
+#### 🐙 **GitHub Agent**
+- **Repository Management**: Clone, create, and manage repositories
+- **Issue & PR Operations**: Create, update, and track issues and pull requests
+- **Workflow Automation**: Trigger and monitor GitHub Actions workflows
+- **Branch Management**: Create branches, manage merges, and handle conflicts
+
+#### ☁️ **Azure Agent** 
+- **Cloud Resource Management**: Deploy and manage Azure services
+- **Service Principal Authentication**: Secure Azure operations with enterprise-grade auth
+- **Infrastructure as Code**: Automate cloud deployments and configurations
+- **Resource Monitoring**: Track and analyze Azure resource usage
+
+#### 📊 **Chart Agent**
+- **Data Visualization**: Create dynamic charts and graphs
+- **Business Intelligence**: Transform raw data into visual insights
+- **Real-time Analytics**: Generate live data dashboards
+- **Export Capabilities**: Multiple format support (PNG, PDF, SVG)
+
+#### 🔒 **Security Agent**
+- **Web Security Analysis**: HTTP header analysis and SSL/TLS assessment
+- **DNS Security**: Comprehensive DNS configuration security checks
+- **Vulnerability Scanning**: Automated security assessment tools
+- **Compliance Reporting**: Generate detailed security audit reports
+
+#### 🔍 **Snyk Scanner Agent**
+- **Dependency Scanning**: Identify vulnerable packages and dependencies
+- **License Compliance**: Track open source license obligations
+- **Security Monitoring**: Continuous vulnerability monitoring
+- **Remediation Guidance**: Actionable fix recommendations
+
+#### 🛡️ **GitHub Security Agent** (Hybrid)
+- **DevSecOps Integration**: Combines GitHub operations with Snyk security
+- **Automated Security Scanning**: Repository cloning + vulnerability analysis
+- **CI/CD Security**: Integrate security checks into development workflows
+- **Risk Assessment**: Comprehensive repository security evaluation
+
+#### 📄 **PDF Agent**
+- **Document Processing**: Extract text and metadata from PDF files
+- **Content Analysis**: Search and analyze document content
+- **Page Management**: Extract specific pages and sections
+- **Batch Processing**: Handle multiple documents simultaneously
+
+#### 🌐 **Scraper Agent**
+- **Web Content Extraction**: Intelligent web scraping and data extraction
+- **Metadata Mining**: Extract structured data from web pages
+- **Link Analysis**: Comprehensive website link mapping
+- **Content Parsing**: Clean and structured content extraction
+
+#### 🧪 **Sample Agent**
+- **Development Testing**: Sandbox environment for testing new features
+- **Tool Validation**: Verify tool functionality and integration
+- **Prototype Development**: Rapid prototyping of new agent capabilities
+- **Educational Examples**: Demonstration of platform capabilities
+
 ---
 
 ## 📋 Prerequisites
@@ -402,14 +460,46 @@ MIT License - see individual component directories for specific license details.
 
 ## 🌟 Features
 
-- 🤖 **Multi-Agent Orchestration** - Coordinate multiple AI agents seamlessly
-- 🔧 **Extensible Tool Integration** - Easy-to-add MCP tools and services  
+- 🤖 **Multi-Agent Orchestration** - Coordinate 9 specialized AI agents seamlessly
+- 🔧 **Extensible Tool Integration** - 50+ MCP tools across GitHub, Azure, security, and data processing
 - 🌐 **Modern Web Interface** - Responsive Angular frontend with real-time chat
-- 🔒 **Enterprise Security** - JWT authentication and security analysis tools
-- 📊 **Comprehensive Monitoring** - Activity logging and health checks
-- 🐳 **Container Ready** - Docker support for all components
-- ⚡ **High Performance** - FastAPI backend with async operations
-- 🔌 **Protocol Compliance** - Full Model Context Protocol support
+- 🔒 **Enterprise Security** - JWT authentication, vulnerability scanning, and security analysis tools
+- 📊 **Comprehensive Monitoring** - Activity logging, token counting, and health checks
+- 🐳 **Container Ready** - Docker support for all components with orchestrated deployment
+- ⚡ **High Performance** - FastAPI backend with async operations and smart tool selection
+- 🔌 **Protocol Compliance** - Full Model Context Protocol (MCP) support
+- 🔀 **Dynamic Agent Composition** - Combine multiple agents for complex workflows
+- 🎯 **Smart Tool Filtering** - Intelligent tool selection to optimize performance
+- 🌍 **Cloud-Native** - Azure OpenAI integration with enterprise-grade authentication
+- 📈 **Scalable Architecture** - Modular design supporting easy agent expansion
+
+---
+
+## 🎯 Technical Highlights
+
+### Advanced AI Architecture
+- **LlamaIndex Integration**: Leverages state-of-the-art RAG (Retrieval-Augmented Generation) capabilities
+- **ReAct Agents**: Implements Reasoning and Acting paradigm for intelligent decision-making
+- **Dynamic Tool Composition**: Runtime agent creation with intelligent tool selection
+- **Token Optimization**: Smart prompt engineering and tool filtering for rate limit management
+
+### Enterprise Integration Patterns
+- **OAuth & Service Principal Auth**: Secure integration with GitHub and Azure services  
+- **Asynchronous Processing**: Non-blocking operations with proper error handling
+- **Database Persistence**: SQLAlchemy with async support for scalable data management
+- **Callback Management**: Comprehensive logging and monitoring of AI operations
+
+### DevOps & Security Excellence
+- **Container Orchestration**: Multi-service Docker deployment with health checks
+- **Security-First Design**: Vulnerability scanning, dependency analysis, and compliance monitoring
+- **Observability**: Structured logging, token counting, and performance metrics
+- **Configuration Management**: Environment-based configuration with validation
+
+### Scalability & Performance
+- **Tool Deduplication**: Intelligent tool management preventing context overflow
+- **Selective Agent Loading**: Load only required agents based on user needs
+- **Rate Limit Intelligence**: Adaptive tool selection based on API constraints
+- **Caching Strategies**: Optimized tool loading and agent initialization
 
 ---
 
