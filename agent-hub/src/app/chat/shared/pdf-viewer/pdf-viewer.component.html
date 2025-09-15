@@ -1,0 +1,36 @@
+@if (isOpen()) {
+  <div class="pdf-viewer-modal">
+    <div class="modal-overlay" (click)="onClose()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>{{ fileName() }}</h3>
+        <button class="close-button" (click)="onClose()">
+          <ngx-icon name="Close" size="lg" />
+        </button>
+      </div>
+      
+      <div class="pdf-container">
+        @if (isLoading()) {
+          <div class="loading">
+            <div class="spinner"></div>
+            <p>Loading PDF...</p>
+          </div>
+        }
+        @if (error()) {
+          <div class="error">
+            <p>{{ error() }}</p>
+            <button class="retry-button" (click)="loadPdf(fileId())">Retry</button>
+          </div>
+        }
+        @if (fileUrl(); as url) {
+          <iframe 
+            [src]="url | safeUrl" 
+            class="pdf-iframe"
+            (load)="onLoad()"
+            (error)="onError()">
+          </iframe>
+        }
+      </div>
+    </div>
+  </div>
+}

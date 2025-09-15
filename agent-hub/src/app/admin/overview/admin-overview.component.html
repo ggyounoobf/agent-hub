@@ -1,0 +1,138 @@
+<div class="admin-overview">
+  <div class="overview-header">
+    <div class="header-content">
+      <h2>System Overview</h2>
+      <p>Welcome to the Agent Hub Admin Panel</p>
+    </div>
+    <div class="header-actions">
+      <button class="refresh-btn" (click)="loadAnalyticsData()" [disabled]="isLoading()">
+        <i class="icon-refresh"></i>
+        Refresh Data
+      </button>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Loading analytics data...</p>
+    </div>
+  } @else if (hasError()) {
+    <div class="error-container">
+      <div class="error-icon">
+        <i class="icon-alert-triangle"></i>
+      </div>
+      <h4>Data Loading Issue</h4>
+      <p>{{ errorMessage() }}</p>
+      <button class="retry-btn" (click)="loadAnalyticsData()">
+        <i class="icon-refresh"></i>
+        Retry
+      </button>
+    </div>
+  } @else {
+    <div class="dashboard-grid">
+      <!-- KPI Cards Section -->
+      <div class="kpi-section">
+        <h3>Key Metrics</h3>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon users">
+              <i class="icon-users"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ totalUsers() | number }}</h3>
+              <p>Total Users</p>
+              <span class="stat-change positive">+{{ recentUsers() }} recent</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon chats">
+              <i class="icon-message-circle"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ totalChats() | number }}</h3>
+              <p>Total Chats</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon files">
+              <i class="icon-file-text"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ totalFiles() | number }}</h3>
+              <p>Files Processed</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon agents">
+              <i class="icon-cpu"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ totalAgents() | number }}</h3>
+              <p>Active Agents</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon success">
+              <i class="icon-check-circle"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ querySuccessRate() }}%</h3>
+              <p>Query Success Rate</p>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon queries">
+              <i class="icon-activity"></i>
+            </div>
+            <div class="stat-content">
+              <h3>{{ recentQueries() | number }}</h3>
+              <p>Recent Queries</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Request Management Section -->
+      <div class="requests-section">
+        <h3>Pending Access Requests</h3>
+        <app-admin-request-management></app-admin-request-management>
+      </div>
+
+      <!-- Recent Activity Section -->
+      <div class="activity-section">
+        <h3>Recent Activity</h3>
+        <div class="recent-activity">
+          <div class="activity-list">
+            @if (recentActivity().length === 0) {
+              <div class="no-activity">
+                <div class="empty-icon">
+                  <i class="icon-activity"></i>
+                </div>
+                <h4>No recent activity</h4>
+                <p>System activity will appear here</p>
+              </div>
+            } @else {
+              @for (activity of recentActivity(); track activity.id) {
+                <div class="activity-item">
+                  <div class="activity-icon" [class]="getActivityIconClass(activity.type)">
+                    <i [class]="getActivityIcon(activity.type)"></i>
+                  </div>
+                  <div class="activity-content">
+                    <p class="activity-description">{{ activity.description }}</p>
+                    <span class="activity-time">{{ formatTime(activity.timestamp) }}</span>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

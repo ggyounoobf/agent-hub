@@ -1,0 +1,300 @@
+<section class="analytics-dashboard">
+  <!-- Include the icon component -->
+  <app-analytics-icons></app-analytics-icons>
+  
+  <header class="dashboard-header">
+    <h2>Analytics Dashboard</h2>
+    <div class="dashboard-controls">
+      <div class="time-range-selector">
+        <button 
+          [class.active]="timeRange() === 7"
+          (click)="onTimeRangeChange(7)">
+          7 Days
+        </button>
+        <button 
+          [class.active]="timeRange() === 30"
+          (click)="onTimeRangeChange(30)">
+          30 Days
+        </button>
+        <button 
+          [class.active]="timeRange() === 90"
+          (click)="onTimeRangeChange(90)">
+          90 Days
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Loading indicator -->
+  @if (isLoading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Loading analytics data...</p>
+    </div>
+  } @else {
+    <!-- Tab navigation -->
+    <nav class="tab-navigation" role="tablist">
+      <button 
+        role="tab"
+        [attr.aria-selected]="activeTab() === 'overview'"
+        [class.active]="activeTab() === 'overview'"
+        (click)="setActiveTab('overview')">
+        Overview
+      </button>
+      <button 
+        role="tab"
+        [attr.aria-selected]="activeTab() === 'usage'"
+        [class.active]="activeTab() === 'usage'"
+        (click)="setActiveTab('usage')">
+        Usage Statistics
+      </button>
+      <button 
+        role="tab"
+        [attr.aria-selected]="activeTab() === 'performance'"
+        [class.active]="activeTab() === 'performance'"
+        (click)="setActiveTab('performance')">
+        Agent Performance
+      </button>
+      <button 
+        role="tab"
+        [attr.aria-selected]="activeTab() === 'activity'"
+        [class.active]="activeTab() === 'activity'"
+        (click)="setActiveTab('activity')">
+        User Activity
+      </button>
+    </nav>
+
+    <!-- Overview Tab -->
+    @if (activeTab() === 'overview' && analyticsOverview()) {
+      <main class="tab-content" role="tabpanel">
+        <div class="dashboard-section">
+          <h3>Key Metrics</h3>
+          <div class="stats-grid">
+            <div class="stat-card" style="--stat-color: #8b5cf6;">
+              <div class="stat-icon" style="background: #8b5cf6;">
+                <svg class="stat-icon-svg"><use href="#icon-users"></use></svg>
+              </div>
+              <div class="stat-content">
+                <h3>{{ analyticsOverview()!.total_users | number }}</h3>
+                <p>Total Users</p>
+              </div>
+            </div>
+
+            <div class="stat-card" style="--stat-color: #10b981;">
+              <div class="stat-icon" style="background: #10b981;">
+                <svg class="stat-icon-svg"><use href="#icon-message-circle"></use></svg>
+              </div>
+              <div class="stat-content">
+                <h3>{{ analyticsOverview()!.total_chats | number }}</h3>
+                <p>Total Chats</p>
+              </div>
+            </div>
+
+            <div class="stat-card" style="--stat-color: #f59e0b;">
+              <div class="stat-icon" style="background: #f59e0b;">
+                <svg class="stat-icon-svg"><use href="#icon-file-text"></use></svg>
+              </div>
+              <div class="stat-content">
+                <h3>{{ analyticsOverview()!.total_queries | number }}</h3>
+                <p>Total Queries</p>
+              </div>
+            </div>
+
+            <div class="stat-card" style="--stat-color: #3b82f6;">
+              <div class="stat-icon" style="background: #3b82f6;">
+                <svg class="stat-icon-svg"><use href="#icon-cpu"></use></svg>
+              </div>
+              <div class="stat-content">
+                <h3>{{ analyticsOverview()!.total_agents | number }}</h3>
+                <p>Active Agents</p>
+              </div>
+            </div>
+
+            <div class="stat-card" style="--stat-color: #ec4899;">
+              <div class="stat-icon" style="background: #ec4899;">
+                <svg class="stat-icon-svg"><use href="#icon-check-circle"></use></svg>
+              </div>
+              <div class="stat-content">
+                <h3>{{ analyticsOverview()!.query_success_rate | number:'1.1-1' }}%</h3>
+                <p>Success Rate</p>
+              </div>
+            </div>
+
+            <div class="stat-card" style="--stat-color: #ef4444;">
+              <div class="stat-icon" style="background: #ef4444;">
+                <svg class="stat-icon-svg"><use href="#icon-file"></use></svg>
+              </div>
+              <div class="stat-content">
+                <h3>{{ analyticsOverview()!.total_files | number }}</h3>
+                <p>Files Processed</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Most Active Users -->
+        <div class="dashboard-section">
+          <section class="chart-section">
+            <h3>Most Active Users</h3>
+            <div class="user-ranking">
+              @for (user of analyticsOverview()!.most_active_users; track user.username; let i = $index) {
+                <div class="user-item">
+                  <span class="user-name">{{ user.username }}</span>
+                  <div class="progress-bar">
+                    <div 
+                      class="progress-fill" 
+                      [style.width.%]="(user.query_count / analyticsOverview()!.most_active_users[0].query_count) * 100"
+                      style="background: #8b5cf6;">
+                    </div>
+                  </div>
+                  <span class="query-count">{{ user.query_count | number }}</span>
+                </div>
+              }
+            </div>
+          </section>
+        </div>
+      </main>
+    }
+
+    <!-- Usage Statistics Tab -->
+    @if (activeTab() === 'usage' && usageStats()) {
+      <main class="tab-content" role="tabpanel">
+        <div class="dashboard-section">
+          <div class="charts-grid">
+            <!-- Query Time Series -->
+            <section class="chart-card">
+              <h3>Query Volume</h3>
+              <div class="time-series-chart">
+                @for (item of usageStats()!.query_time_series; track item.date) {
+                  <div class="chart-bar">
+                    <div 
+                      class="bar-fill" 
+                      [style.height.%]="(item.value / getMaxValue(usageStats()!.query_time_series)) * 80"
+                      style="background: #8b5cf6;">
+                    </div>
+                    <span class="bar-label">{{ formatDate(item.date) }}</span>
+                  </div>
+                }
+              </div>
+            </section>
+
+            <!-- Agent Usage -->
+            <section class="chart-card">
+              <h3>Agent Usage</h3>
+              <div class="agent-usage-chart">
+                @for (agent of usageStats()!.agent_usage; track agent.agent_name) {
+                  <div class="agent-bar">
+                    <div class="agent-info">
+                      <span class="agent-name">{{ agent.agent_name }}</span>
+                      <span class="agent-count">{{ agent.usage_count | number }}</span>
+                    </div>
+                    <div class="progress-container">
+                      <div 
+                        class="progress-bar" 
+                        [style.width.%]="(agent.usage_count / getMaxAgentUsage()) * 100"
+                        [style.background]="getAgentColor(agent.agent_name)">
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+    }
+
+    <!-- Agent Performance Tab -->
+    @if (activeTab() === 'performance' && agentPerformance()) {
+      <main class="tab-content" role="tabpanel">
+        <div class="dashboard-section">
+          <h3>Agent Performance Metrics</h3>
+          <div class="performance-grid">
+            @for (agent of agentPerformance()!.agent_performance; track agent.agent_name) {
+              <article class="performance-card">
+                <header class="agent-header">
+                  <h3>{{ agent.agent_name }}</h3>
+                </header>
+                <div class="metrics-grid">
+                  <div class="metric">
+                    <span class="metric-label">Total Queries</span>
+                    <span class="metric-value">{{ agent.total_queries | number }}</span>
+                  </div>
+                  <div class="metric">
+                    <span class="metric-label">Success Rate</span>
+                    <span class="metric-value">{{ agent.success_rate | number:'1.1-1' }}%</span>
+                  </div>
+                  <div class="metric">
+                    <span class="metric-label">Avg Tokens</span>
+                    <span class="metric-value">{{ agent.average_tokens | number }}</span>
+                  </div>
+                </div>
+                <section class="tool-usage">
+                  <h4>Tool Usage</h4>
+                  @if (agentPerformance()!.tool_usage[agent.agent_name]) {
+                    <div class="tools-list">
+                      @for (tool of agentPerformance()!.tool_usage[agent.agent_name]; track tool.tool_name) {
+                        <div class="tool-item">
+                          <span class="tool-name">{{ tool.tool_name }}</span>
+                          <span class="tool-count">{{ tool.usage_count | number }}</span>
+                        </div>
+                      }
+                    </div>
+                  } @else {
+                    <p class="no-data">No tool usage data</p>
+                  }
+                </section>
+              </article>
+            }
+          </div>
+        </div>
+      </main>
+    }
+
+    <!-- User Activity Tab -->
+    @if (activeTab() === 'activity' && userActivity()) {
+      <main class="tab-content" role="tabpanel">
+        <div class="dashboard-section">
+          <div class="activity-grid">
+            <!-- Registration Trends -->
+            <section class="chart-card">
+              <h3>User Registrations</h3>
+              <div class="time-series-chart">
+                @for (item of userActivity()!.user_registration_time_series; track item.date) {
+                  <div class="chart-bar">
+                    <div 
+                      class="bar-fill" 
+                      [style.height.%]="(item.value / getMaxValue(userActivity()!.user_registration_time_series)) * 80"
+                      style="background: #10b981;">
+                    </div>
+                    <span class="bar-label">{{ formatDate(item.date) }}</span>
+                  </div>
+                }
+              </div>
+            </section>
+
+            <!-- User Engagement -->
+            <section class="chart-card">
+              <h3>User Engagement</h3>
+              <div class="user-engagement-chart">
+                @for (user of userActivity()!.user_engagement; track user.username) {
+                  <div class="engagement-item">
+                    <span class="user-name">{{ user.username }}</span>
+                    <div class="progress-container">
+                      <div 
+                        class="progress-bar" 
+                        [style.width.%]="(user.query_count / getMaxUserEngagement()) * 100"
+                        style="background: #3b82f6;">
+                      </div>
+                    </div>
+                    <span class="query-count">{{ user.query_count | number }}</span>
+                  </div>
+                }
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+    }
+  }
+</section>

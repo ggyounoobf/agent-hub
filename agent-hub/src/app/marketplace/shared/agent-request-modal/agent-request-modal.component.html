@@ -1,0 +1,105 @@
+<ngx-modal-content [controller]="ctrl">
+  <ng-container title>
+    <div class="modal-title">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="title-icon">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <circle cx="12" cy="16" r="1"></circle>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+      </svg>
+      Request Agent Access
+    </div>
+  </ng-container>
+
+  <ng-container content>
+    <div class="access-request-form">
+      <!-- Agent Information -->
+      <div class="tool-info-card">
+        <div class="tool-header">
+          <div class="tool-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+            </svg>
+          </div>
+          <div class="tool-details">
+            <h3 class="tool-name">{{ data.agent.name }}</h3>
+            <span class="tool-category">{{ getAgentCategory(data.agent) }}</span>
+          </div>
+        </div>
+        <p class="tool-description">{{ getAgentDescription(data.agent) }}</p>
+        @if (data.agent.tools && data.agent.tools.length > 0) {
+          <div class="tool-list">
+            <div class="tool-list-header">Available Tools ({{ data.agent.tools.length }})</div>
+            <div class="tool-tags">
+              @for (tool of data.agent.tools.slice(0, 5); track tool) {
+                <span class="tool-tag">{{ tool.name }}</span>
+              }
+              @if (data.agent.tools.length > 5) {
+                <span class="tool-tag more">+{{ data.agent.tools.length - 5 }} more</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Request Form -->
+      <form [formGroup]="requestForm" (ngSubmit)="onSubmit()">
+        <!-- Justification -->
+        <div class="form-group">
+          <label for="justification" class="form-label">Justification</label>
+          <textarea
+            id="justification"
+            class="form-textarea"
+            formControlName="justification"
+            placeholder="Please provide a reason for requesting access to this agent..."
+            rows="4"
+          ></textarea>
+          @if (requestForm.get('justification')?.invalid && requestForm.get('justification')?.touched) {
+            <div class="form-error">
+              @if (requestForm.get('justification')?.errors?.['required']) {
+                Justification is required
+              }
+              @if (requestForm.get('justification')?.errors?.['minlength']) {
+                Justification must be at least 10 characters long
+              }
+            </div>
+          }
+          <div class="form-hint">
+            Please explain why you need access to this agent (minimum 10 characters)
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="onCancel()"
+            [disabled]="submitting()"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="requestForm.invalid || submitting()"
+          >
+            @if (submitting()) {
+              <div class="loading-spinner"></div>
+              Submitting Request...
+            } @else {
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22,4 12,14.01 9,11.01"></polyline>
+              </svg>
+              Request Access
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </ng-container>
+</ngx-modal-content>

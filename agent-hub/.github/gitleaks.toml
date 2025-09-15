@@ -1,0 +1,47 @@
+title = "Custom Gitleaks Config"
+
+[[rules]]
+description = "Generic API Key"
+id = "generic-api-key"
+regex = '''(?i)(api[_-]?key|access[_-]?token|secret|auth[_-]?token)\s*[:=]\s*['"]?[A-Za-z0-9_\-]{16,}['"]?'''
+tags = ["key", "API", "generic"]
+
+[[rules]]
+description = "AWS Access Key"
+id = "aws-access-key"
+regex = '''AKIA[0-9A-Z]{16}'''
+tags = ["AWS", "key"]
+
+[[rules]]
+description = "AWS Secret Key"
+id = "aws-secret-key"
+regex = '''(?i)aws(.{0,20})?(?-i)['"]?[0-9a-zA-Z/+]{40}['"]?'''
+tags = ["AWS", "key"]
+
+[[rules]]
+description = "Google API Key"
+id = "google-api-key"
+regex = '''AIza[0-9A-Za-z\-_]{35}'''
+tags = ["Google", "key"]
+
+# ===== Exclusions =====
+[[allowlist]]
+description = "Ignore Angular environment.ts"
+paths = [
+  "src/environments/environment.ts",
+  "src/environments/environment.*.ts"
+]
+
+[[allowlist]]
+description = "Ignore test data files"
+paths = [
+  "tests/**",
+  "**/*.spec.ts",
+  "**/*.test.js"
+]
+
+[[allowlist]]
+description = "Ignore common placeholder values"
+regexes = [
+  '''(YOUR_API_KEY_HERE|CHANGE_ME|PLACEHOLDER|DUMMY_VALUE)'''
+]

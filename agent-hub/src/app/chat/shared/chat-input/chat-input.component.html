@@ -1,0 +1,214 @@
+<form [formGroup]="form" (ngSubmit)="sendMessage()">
+  <div class="input-container">
+    <!-- File input (hidden) -->
+    <input
+      #fileInput
+      type="file"
+      multiple
+      accept=".pdf,application/pdf"
+      (change)="onFileSelected($event)"
+      style="display: none;"
+    />
+    
+    <!-- File attachment button - moved to left -->
+    <button
+      type="button"
+      class="file-button"
+      title="Attach file"
+      (click)="fileInput.click()"
+    >
+      <ngx-icon name="Add" size="lg" />
+    </button>
+    
+    <textarea
+      #textarea
+      rows="1"
+      placeholder="Send a message"
+      formControlName="message"
+      (input)="setHeight()"
+    ></textarea>
+    
+    <!-- Right side buttons -->
+    <div class="right-buttons">
+      <!-- Agent selector button -->
+      <!-- Agent button -->
+      <button
+        type="button"
+        class="agent-button"
+        [class.no-agents]="selectedAgents().length === 0"
+        [title]="getAgentButtonTitle()"
+        (click)="toggleAgentSelector()"
+        [disabled]="disabled()"
+      >
+        @if (selectedAgents().length > 0) {
+          <span class="agent-count">{{ selectedAgents().length }}</span>
+        } @else {
+          <svg class="agents-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="m22 21-3-3m0 0-3-3m3 3h-6"/>
+          </svg>
+        }
+      </button>
+      <!-- Send/Stop button -->
+      @if (!processing()) {
+        <button 
+          class="send-button"
+          title="Send" 
+          [disabled]="form.invalid && selectedFiles().length === 0"
+        >
+          <ngx-icon name="Send" size="xlg" />
+        </button>
+      } @else {
+        <button 
+          class="stop-button"
+          title="Abort" 
+          type="button" 
+          (click)="abortProcessing()"
+        >
+          <ngx-icon name="Stop" size="xlg" />
+        </button>
+      }
+    </div>
+  </div>
+  
+  <!-- Error message display -->
+  @if (error()) {
+    <div class="error-message">
+      <span>{{ error() }}</span>
+      <button type="button" class="close-error" (click)="clearError.emit()">
+        <ngx-icon name="Close" size="sm" />
+      </button>
+    </div>
+  }
+  
+  <!-- Selected files display -->
+  @if (selectedFiles().length > 0) {
+    <div class="selected-files">
+      @for (file of selectedFiles(); track file.name) {
+        <div class="file-chip">
+          <span>{{ file.name }}</span>
+          <button
+            type="button"
+            class="remove-file"
+            (click)="removeFile(file)"
+          >
+            <ngx-icon name="Close" size="sm" />
+          </button>
+        </div>
+      }
+    </div>
+  }
+</form>
+
+<!-- Agent Selector Modal -->
+@if (showAgentSelector()) {
+  <div class="agent-modal-overlay" (click)="closeAgentSelector()">
+    <div class="agent-modal" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="modal-header">
+        <h3>Select Agents</h3>
+        <button class="close-btn" (click)="closeAgentSelector()">
+          <ngx-icon name="Close" size="lg" />
+        </button>
+      </div>
+
+      <!-- Search -->
+      <div class="search-section">
+        <input
+          type="text"
+          placeholder="Search agents..."
+          class="search-input"
+          #searchInput
+          (input)="onSearchInput($event)"
+          [(ngModel)]="searchQuery"
+        />
+      </div>
+
+      <!-- Selected Agents -->
+      @if (selectedAgents().length > 0) {
+        <div class="selected-agents">
+          <div class="selected-agents-header">
+            <h4>Selected Agents ({{ selectedAgents().length }})</h4>
+            <button class="clear-all" (click)="clearAllAgents()" [disabled]="_authService.isAdmin()">
+              Clear All
+            </button>
+          </div>
+          <div class="selected-agents-list">
+            @for (agent of selectedAgents(); track agent.id) {
+              <div class="agent-chip">
+                <span>{{ agent.name }}</span>
+                <button
+                  type="button"
+                  class="remove-agent"
+                  (click)="removeAgent(agent.id)"
+                  title="Remove agent"
+                  [disabled]="_authService.isAdmin()"
+                >
+                  <ngx-icon name="Close" size="sm" />
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Agent List -->
+      <div class="agent-list">
+        @if (loadingAgents()) {
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <span>Loading agents...</span>
+          </div>
+        } @else if (agentError()) {
+          <div class="error-state">
+            <span>{{ agentError() }}</span>
+            <button class="retry-btn" (click)="loadAgents()">Retry</button>
+          </div>
+        } @else {
+          @for (agent of filteredAgents(); track agent.id) {
+            <div
+              class="agent-item"
+              [class.selected]="isAgentSelected(agent.id)"
+              (click)="toggleAgent(agent.id)"
+            >
+              <div class="agent-info">
+                <h4>{{ agent.name }}</h4>
+                <p>{{ agent.description }}</p>
+                <span class="tool-count">{{ agent.tools.length }} tools</span>
+              </div>
+              <div class="agent-checkbox-container">
+                <div class="agent-checkbox">
+                  <input
+                    type="checkbox"
+                    [checked]="isAgentSelected(agent.id)"
+                    (click)="toggleAgent(agent.id); $event.stopPropagation()"
+                  />
+                </div>
+              </div>
+            </div>
+          } @empty {
+            <div class="empty-state">
+              <span>No agents found</span>
+            </div>
+          }
+        }
+      </div>
+
+      <!-- Marketplace Link -->
+      <div class="marketplace-section">
+        <p>Need more agents? Explore our marketplace!</p>
+        <button class="marketplace-btn" (click)="goToMarketplace()">
+          <ngx-icon name="Add" size="sm" />
+          Add Agents
+        </button>
+      </div>
+
+      <!-- Actions -->
+      <div class="modal-actions">
+        <button class="cancel-btn" (click)="closeAgentSelector()">Cancel</button>
+        <button class="apply-btn" (click)="closeAgentSelector()">Apply</button>
+      </div>
+    </div>
+  </div>
+}

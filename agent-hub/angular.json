@@ -1,0 +1,131 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "agent-hub": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@ngx-templates/shared/assets",
+                "output": "assets"
+              }
+            ],
+            "styles": [
+              "src/styles.scss",
+              "node_modules/@ngx-templates/shared/theme/src/theme.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules/@ngx-templates/shared/styles",
+                "node_modules/@ngx-templates/shared/theme/src"
+              ]
+            }
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1MB",
+                  "maximumError": "2MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "25kB",
+                  "maximumError": "35kB"
+                }
+              ],
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "agent-hub:build:production"
+            },
+            "development": {
+              "buildTarget": "agent-hub:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/@ngx-templates/shared/assets",
+                "output": "assets"
+              }
+            ],
+            "styles": [
+              "src/styles.scss",
+              "node_modules/@ngx-templates/shared/theme/src/theme.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "node_modules/@ngx-templates/shared/styles",
+                "node_modules/@ngx-templates/shared/theme/src"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}

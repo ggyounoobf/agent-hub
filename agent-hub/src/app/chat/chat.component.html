@@ -1,0 +1,48 @@
+<div #conversation class="conversation">
+  <!-- Show skeleton loader while initializing -->
+  @if (isInitializing()) {
+    <acb-query-skeleton [lines]="4" />
+    <acb-query-skeleton [lines]="2" />
+  } @else {
+    @if (loading() && queries().size === 0) {
+      <acb-query-skeleton [lines]="4" />
+      <acb-query-skeleton [lines]="2" />
+    } @else {
+      @if ((chatId() || chatbot.tempChat()) && (queries().size > 0 || !loading())) {
+        <!-- Show chat messages -->
+        @for (q of queries(); track q.id) {
+          <acb-query [query]="q" [isNew]="isNewQuery(q)" />
+        }
+        @if (chat() && chat()!.totalQueries > queries().size) {
+          <ngx-infinite-scroll
+            [scrollCont]="conversation"
+            (loadNext)="loadNextPage($event)"
+          />
+          <!-- Show loading indicator when fetching more queries -->
+          @if (loading()) {
+            <acb-query-skeleton [lines]="3" />
+          }
+        }
+      } @else if (chatId() && queries().size === 0 && !loading()) {
+        <!-- Chat ID exists but no queries, show empty state -->
+        <div class="empty-chat">
+          <p>This chat has no messages yet.</p>
+        </div>
+      } @else {
+        <!-- No chat ID and no temp chat, show intro -->
+        <acb-chat-intro
+          (message)="sendPredefined($event)"
+        />
+      }
+    }
+  }
+</div>
+@if (error()) {
+  <div class="error-container">
+    <p>{{ error() }}</p>
+  </div>
+}
+<acb-chat-input #input [error]="error()" (send)="send($event)" (abort)="abort()" (agentSelectionChanged)="onAgentSelectionChanged($event)" (clearError)="error.set(null)" />
+<p class="disclaimer">
+  AI systems can make mistakes, so double-check the information.
+</p>

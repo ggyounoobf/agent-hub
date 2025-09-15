@@ -1,0 +1,13 @@
+<p class="title"><span>Hello, {{ userFirstName() }}!</span></p>
+<p class="subtitle">Ask me anything that you are interested about</p>
+
+<!-- Agent Selection Info -->
+<div class="agent-selection-info">
+  <p>Select an agent using the agent button <svg class="agents-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="display: inline-block; vertical-align: middle;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="m22 21-3-3m0 0-3-3m3 3h-6"></path></svg> next to the send button</p>
+</div>
+
+<div class="msgs">
+  @for (m of predefinedMessages; track m) {
+    <button (click)="message.emit(m)">{{ m }}</button>
+  }
+</div>

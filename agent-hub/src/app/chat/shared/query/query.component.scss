@@ -1,0 +1,242 @@
+@use './query-markdown.scss';
+
+:host {
+  margin: 0;
+  display: block;
+  position: relative;
+
+  .row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border-radius: 12px;
+    background: transparent;
+    transition: all 0.2s ease;
+    position: relative;
+
+    &.user {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-border-secondary);
+      margin-left: 10%;
+      
+      .message-container {
+        background: var(--color-accent-primary);
+        color: var(--color-bg-primary);
+        border-radius: 18px 18px 4px 18px;
+        padding: 0.875rem 1.125rem;
+        
+        .msg {
+          color: var(--color-bg-primary);
+          font-weight: var(--font-weight-medium);
+          margin: 0;
+        }
+      }
+      
+      .vis {
+        order: 2;
+        margin-left: 1rem;
+        margin-right: 0;
+      }
+      
+      @media (max-width: 768px) {
+        margin-left: 5%;
+      }
+    }
+
+    &.bot {
+      background: var(--color-bg-tertiary);
+      border: 1px solid var(--color-border-primary);
+      margin-right: 10%;
+      
+      .message-container {
+        background: transparent;
+        padding: 0.875rem 1.125rem;
+        border-radius: 18px 18px 18px 4px;
+        
+        .msg {
+          margin: 0;
+        }
+      }
+      
+      @media (max-width: 768px) {
+        margin-right: 5%;
+      }
+    }
+
+    .vis {
+      flex: 0 0 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: var(--color-reddish-orange);
+      background: var(--color-bg-quaternary);
+      border: 2px solid var(--color-border-primary);
+      margin-right: 1rem;
+      
+      ngx-icon {
+        font-size: 1.5rem;
+      }
+    }
+
+    &.bot > .vis {
+      color: var(--color-french-violet);
+      background: var(--color-bg-secondary);
+    }
+
+    &.user > .vis {
+      background: var(--color-accent-primary);
+      color: var(--color-bg-primary);
+      border-color: var(--color-accent-primary);
+    }
+
+    .message-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0; // Prevent overflow
+      position: relative;
+    }
+
+    .msg {
+      line-height: 1.6;
+      flex: 1;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      
+      // Enhanced typography
+      font-size: 0.95rem;
+      
+      // Better link styling
+      a {
+        color: var(--color-accent-secondary);
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          border-bottom-color: var(--color-accent-secondary);
+        }
+      }
+    }
+    
+    // Mobile optimizations
+    @media (max-width: 768px) {
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      
+      .vis {
+        flex: 0 0 40px;
+        height: 40px;
+        margin-right: 0.75rem;
+        
+        ngx-icon {
+          font-size: 1.25rem;
+        }
+      }
+      
+      .message-container {
+        padding: 0.75rem 1rem;
+      }
+      
+      .msg {
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+    }
+  }
+
+  .animated {
+    animation: slide-down 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+  
+  // Enhanced loading state for bot messages
+  .bot .msg acb-query-skeleton {
+    background: var(--color-bg-secondary);
+    border-radius: 8px;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      animation: shimmer 1.5s infinite;
+    }
+  }
+
+  // Error message styling
+  .error-message {
+    background: var(--color-bg-error, #fef2f2);
+    border: 1px solid var(--color-border-error, #fecaca);
+    border-radius: 8px;
+    padding: 1rem;
+    color: var(--color-text-error, #dc2626);
+
+    .error-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: var(--font-weight-semibold);
+      margin-bottom: 0.5rem;
+
+      ngx-icon {
+        color: var(--color-error, #dc2626);
+        font-size: 1.25rem;
+      }
+    }
+
+    .error-details {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: var(--color-text-error-secondary, #991b1b);
+    }
+  }
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-20px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+// Hover effects for better interactivity
+:host:hover {
+  .row.bot {
+    background: var(--color-bg-quaternary);
+    border-color: var(--color-border-secondary);
+  }
+  
+  .row.user {
+    background: rgba(187, 134, 252, 0.05);
+    border-color: var(--color-accent-primary);
+  }
+}

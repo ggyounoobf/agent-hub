@@ -1,0 +1,12 @@
+@if (filesUploaded().length > 0) {
+  <div class="file-previews">
+    <div class="file-list">
+      @for (file of filesUploaded(); track file.name) {
+        <div class="file-item" (click)="onFileClick(file)">
+          <ngx-icon name="Routine" size="md" />
+          <span class="file-name">{{ file.name }}</span>
+        </div>
+      }
+    </div>
+  </div>
+}

@@ -1,0 +1,51 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # --- Angular / Node dependencies (npm) ---
+  - package-ecosystem: "npm"
+    directory: "/"                 # package.json lives in repo root
+    schedule:
+      interval: "weekly"           # or "daily"
+    open-pull-requests-limit: 10
+    versioning-strategy: increase-if-necessary
+    commit-message:
+      prefix: "deps(npm)"
+      include: "scope"
+    groups:                        # reduce PR noise
+      angular-core:
+        patterns:
+          - "@angular/*"
+          - "zone.js"
+          - "rxjs"
+      eslint-ts:
+        patterns:
+          - "typescript"
+          - "@typescript-eslint/*"
+          - "eslint*"
+          - "@angular-eslint/*"
+      testing:
+        patterns:
+          - "jest*"
+          - "@types/jest"
+          - "karma*"
+          - "jasmine*"
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
+  # --- GitHub Actions updates (optional but recommended) ---
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # --- Docker base image updates (you have a Dockerfile at repo root) ---
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"

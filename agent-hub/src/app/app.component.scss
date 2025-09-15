@@ -1,0 +1,243 @@
+@use 'screen-breakpoints' as sb;
+@use './shared/sidebar/variables' as sidebar;
+
+:host {
+  display: flex;
+  height: 100vh;
+  width: 100vw; // Ensure we use full viewport width
+
+  acb-sidebar,
+  .content {
+    height: 100%;
+  }
+
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    min-height: 0; // Allow shrinking
+    width: 100%; // Ensure full width
+    max-width: none;
+    padding: 0;
+    margin: 0;
+
+    .mobile-menu-trigger {
+      display: none;
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 400; // Above header but below sidebar
+      width: 48px;
+      height: 48px;
+      background: rgba(20, 20, 30, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+      .hamburger-icon {
+        width: 20px;
+        height: 20px;
+        color: rgba(255, 255, 255, 0.8);
+        transition: color 0.3s ease;
+      }
+
+      &:hover {
+        background: rgba(30, 30, 40, 0.95);
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+
+        .hamburger-icon {
+          color: rgba(255, 255, 255, 1);
+        }
+      }
+    }
+
+    acb-header {
+      flex-shrink: 0;
+    }
+
+    main {
+      flex: 1;
+      box-sizing: border-box;
+      width: 100%;
+      max-width: none;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 0; // Prevent flex item from expanding beyond container
+      padding: 0; // Remove default padding
+      margin: 0;
+
+      // Make sure chat component fills available space
+      acb-chat {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      // Smooth transition for route changes
+      router-outlet {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: none;
+        flex: 1;
+        min-height: 0;
+        padding: 0;
+        margin: 0;
+      }
+
+      // Route transition animations
+      ::ng-deep {
+        .route-animation-container {
+          position: relative;
+          width: 100%;
+          height: 100%;
+        }
+
+        .slide-in-enter {
+          animation: slideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .slide-out-leave {
+          animation: slideOut 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+        }
+
+        .fade-in-enter {
+          animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        .fade-out-leave {
+          animation: fadeOut 0.2s ease-in forwards;
+        }
+
+        @keyframes slideIn {
+          from {
+            opacity: 0;
+            transform: translateX(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes slideOut {
+          from {
+            opacity: 1;
+            transform: translateX(0);
+          }
+          to {
+            opacity: 0;
+            transform: translateX(-20px);
+          }
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeOut {
+          from {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          to {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+        }
+      }
+    }
+  }
+
+  @media (min-width: 800px) {
+    acb-sidebar {
+      position: relative;
+      z-index: 1;
+    }
+
+    .content {
+      margin-left: 0;
+    }
+  }
+
+  // Mobile adjustments
+  @media (max-width: 768px) {
+    .content {
+      width: 100vw; // Use viewport width
+      margin-left: 0;
+
+      .mobile-menu-trigger {
+        display: flex; // Show hamburger menu on mobile
+        align-items: center;
+        justify-content: center;
+      }
+
+      main {
+        padding: 1rem;
+        padding-top: calc(56px + 1rem); // Header height (56px) + spacing
+        width: 100%;
+        box-sizing: border-box;
+        transition: padding-top 0.3s ease;
+
+        // Remove the explicit height calculations - let flex handle it
+        acb-chat {
+          flex: 1;
+          min-height: 0;
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+        }
+
+        acb-marketplace {
+          flex: 1;
+          min-height: 0;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  // Small mobile adjustments
+  @media (max-width: 480px) {
+    .content {
+      main {
+        padding: 0.75rem;
+        padding-top: 4rem;
+
+        acb-chat,
+        acb-marketplace {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  // Desktop specific styles
+  @media (min-width: 769px) {
+    .content {
+      main {
+        padding: 1rem;
+        padding-top: 2rem;
+        max-width: 600px;
+        margin: 0 auto;
+        overflow-y: auto; // Allow scrolling for marketplace on desktop
+      }
+    }
+  }
+}

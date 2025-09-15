@@ -1,0 +1,118 @@
+:host {
+  .request-submitted {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 2rem 1rem;
+    max-width: 400px;
+    margin: 0 auto;
+
+    .success-icon {
+      margin-bottom: 1.5rem;
+
+      svg {
+        color: #10b981;
+        background: rgba(16, 185, 129, 0.1);
+        border-radius: 50%;
+        padding: 1rem;
+        width: 80px;
+        height: 80px;
+      }
+    }
+
+    .content {
+      margin-bottom: 2rem;
+
+      .title {
+        margin: 0 0 1rem 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--color-text-primary);
+      }
+
+      .message {
+        margin: 0 0 1.5rem 0;
+        color: var(--color-text-secondary);
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+
+      .request-details {
+        background: var(--color-background-secondary);
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: left;
+
+        .detail-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 0.75rem;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          .detail-label {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+          }
+
+          .detail-value {
+            color: var(--color-text-primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+
+            &.status-pending {
+              color: #f59e0b;
+              background: rgba(245, 158, 11, 0.1);
+              padding: 0.25rem 0.5rem;
+              border-radius: 4px;
+              font-size: 0.75rem;
+            }
+          }
+        }
+      }
+    }
+
+    .actions {
+      .ok-button {
+        background: linear-gradient(135deg, #e91e63 0%, #9c27b0 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        min-width: 120px;
+
+        &:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 8px 25px rgba(233, 30, 99, 0.3);
+        }
+
+        &:active {
+          transform: translateY(0);
+          box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+        }
+      }
+    }
+  }
+}
+
+// Dark theme adjustments
+:host-context([data-theme="dark"]) {
+  .request-submitted {
+    .content {
+      .request-details {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+<!-- Image Modal Overlay -->
+@if (isOpen()) {
+  <div class="image-modal-overlay" (click)="closeModal()">
+    <div class="image-modal-container" (click)="$event.stopPropagation()">
+      <!-- Header with close button and title -->
+      <div class="modal-header">
+        <h3 class="modal-title">{{ imageTitle() || 'Image Preview' }}</h3>
+        <button 
+          class="close-button" 
+          (click)="closeModal()"
+          aria-label="Close image modal"
+          type="button">
+          <ngx-icon name="Close" size="lg" />
+        </button>
+      </div>
+      
+      <!-- Image container with loading state -->
+      <div class="image-container">
+        @if (imageLoading()) {
+          <div class="loading-placeholder">
+            <div class="loading-spinner"></div>
+            <p>Loading image...</p>
+          </div>
+        }
+        
+        <img 
+          [src]="imageUrl()" 
+          [alt]="imageAlt() || 'Full size image'"
+          [class.loaded]="!imageLoading()"
+          (load)="onImageLoad()"
+          (error)="onImageError()"
+          class="modal-image" />
+      </div>
+      
+      <!-- Footer with controls -->
+      <div class="modal-footer">
+        <button 
+          class="action-button download-btn" 
+          (click)="downloadImage()"
+          type="button">
+          <ngx-icon name="Download" size="md" />
+          <span>Download</span>
+        </button>
+        <button 
+          class="action-button open-btn" 
+          (click)="openInNewTab()"
+          type="button">
+          <ngx-icon name="Link" size="md" />
+          <span>Open in New Tab</span>
+        </button>
+      </div>
+    </div>
+  </div>
+}

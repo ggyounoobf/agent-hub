@@ -1,0 +1,114 @@
+@if (shouldShowHeader()) {
+<header class="gemini-header">
+  <div class="header-container">
+    <!-- Left: Mobile Sidebar Toggle or Desktop Brand -->
+    <div class="brand-section">
+      <!-- Mobile: Sidebar Toggle Button -->
+      <button class="mobile-sidebar-toggle" (click)="toggleSidebar()" title="Toggle sidebar">
+        <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <!-- Desktop: Brand Logo and Title -->
+      <div class="desktop-brand">
+        <div class="brand-logo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L15.09 8.26L22 9L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9L8.91 8.26L12 2Z"
+              fill="currentColor" opacity="0.9"/>
+            <circle cx="12" cy="12" r="2" fill="currentColor"/>
+          </svg>
+        </div>
+        <span class="brand-title">MCPisang</span>
+      </div>
+
+      <!-- Mobile: Simplified Brand Title (optional) -->
+      <span class="mobile-brand-title">Agent Hub</span>
+    </div>
+
+    <!-- Center: Status Indicator -->
+    <div class="center-section">
+      <div class="connection-status"
+        [class.online]="isConnected()"
+        [class.offline]="!isConnected()"
+        [class.checking]="healthStatus() === 'checking'">
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          <span class="status-text">{{ healthStatus() === 'connected' ? 'Online' : healthStatus() === 'checking' ? 'Connecting...' : 'Offline' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: User Section -->
+    <div class="user-section">
+      @if (isAuthenticated()) {
+        <div class="user-menu" appClickOutside (clickOutside)="showUserMenu.set(false)">
+          <button class="user-button" (click)="toggleUserMenu()" [class.active]="showUserMenu()">
+            @if (user()?.avatar_url) {
+              <img [src]="user()!.avatar_url" [alt]="user()!.username" class="user-avatar">
+            } @else {
+              <div class="user-initial">
+                {{ (user()?.username || 'U').charAt(0).toUpperCase() }}
+              </div>
+            }
+            <!-- Show username on mobile for better UX -->
+            <span class="user-name-mobile">{{ user()?.username || 'User' }}</span>
+            <svg class="chevron-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6,9 12,15 18,9"></polyline>
+            </svg>
+          </button>
+
+          @if (showUserMenu()) {
+            <div class="dropdown-menu">
+              <div class="user-info">
+                <div class="user-avatar-large">
+                  @if (user()?.avatar_url) {
+                    <img [src]="user()!.avatar_url" [alt]="user()!.username">
+                  } @else {
+                    <div class="user-initial-large">
+                      {{ (user()?.username || 'U').charAt(0).toUpperCase() }}
+                    </div>
+                  }
+                </div>
+                <div class="user-details">
+                  <div class="user-name">{{ user()?.full_name || user()?.username }}</div>
+                  <div class="user-email">{{ user()?.email }}</div>
+                </div>
+              </div>
+              <div class="menu-divider"></div>
+              <div class="menu-actions">
+                <button class="menu-item" (click)="logout()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16,17 21,12 16,7"/>
+                    <line x1="21" y1="12" x2="9" y2="12"/>
+                  </svg>
+                  <span>Sign out</span>
+                </button>
+                <button class="menu-item danger" (click)="logoutAll()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M4.93 4.93l14.14 14.14"/>
+                  </svg>
+                  <span>Sign out everywhere</span>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      } @else {
+        <button class="signin-button" (click)="navigateToLogin()">
+          <span>Sign in</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+            <polyline points="10,17 15,12 10,7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+          </svg>
+        </button>
+      }
+    </div>
+  </div>
+</header>
+}

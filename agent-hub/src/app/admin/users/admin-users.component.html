@@ -1,0 +1,135 @@
+<div class="admin-users">
+  <div class="users-header">
+    <h2>User Management</h2>
+    <p>Manage user accounts and permissions</p>
+  </div>
+
+  <div class="users-actions">
+    <div class="search-filters">
+      <div class="search-box">
+        <i class="icon-search"></i>
+        <input
+          type="text"
+          placeholder="Search users by name or email..."
+          [(ngModel)]="searchTerm"
+          (input)="filterUsers()"
+        />
+      </div>
+      <select [(ngModel)]="roleFilter" (change)="filterUsers()">
+        <option value="">All Roles</option>
+        <option value="admin">Admin</option>
+        <option value="user">User</option>
+      </select>
+    </div>
+    <button class="btn-create" (click)="openCreateUserModal()">
+      <i class="icon-user-plus"></i>
+      Create User
+    </button>
+  </div>
+
+  <div class="users-container">
+    @if (isLoading()) {
+      <div class="loading">
+        <i class="icon-loader spinning"></i>
+        Loading users...
+      </div>
+    } @else if (users().length === 0) {
+      <div class="no-users">
+        <i class="icon-users"></i>
+        <h3>No users found</h3>
+        <p>@if (searchTerm || roleFilter) {
+          No users match your search criteria
+        } @else {
+          No users have been created yet
+        }</p>
+      </div>
+    } @else {
+      <div class="users-table">
+        <div class="table-header">
+          <div class="col-user">User</div>
+          <div class="col-role">Role</div>
+          <div class="col-status">Status</div>
+          <div class="col-created">Created</div>
+          <div class="col-actions">Actions</div>
+        </div>
+
+        @for (user of users(); track user.id) {
+          <div class="table-row">
+            <div class="col-user">
+              <div class="user-info">
+                <div class="user-avatar">
+                  {{ getUserInitials(user.full_name) }}
+                </div>
+                <div class="user-details">
+                  <h4>{{ user.full_name }}</h4>
+                  <p>{{ user.email }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-role">
+              <span class="role-badge" [class]="getRoleClass(user.role)">
+                {{ user.role }}
+              </span>
+            </div>
+            <div class="col-status">
+              <span class="status-badge" [class]="user.is_active ? 'active' : 'inactive'">
+                {{ user.is_active ? 'Active' : 'Inactive' }}
+              </span>
+            </div>
+            <div class="col-created">
+              {{ formatDate(user.created_at) }}
+            </div>
+            <div class="col-actions">
+              <button
+                class="btn-action edit"
+                (click)="editUser(user)"
+                title="Edit User"
+              >
+                <i class="icon-edit"></i>
+              </button>
+              @if (user.role === 'user') {
+                <button
+                  class="btn-action promote"
+                  (click)="promoteToAdmin(user.id)"
+                  title="Promote to Admin"
+                >
+                  <i class="icon-arrow-up"></i>
+                </button>
+              } @else if (user.role === 'admin') {
+                <button
+                  class="btn-action demote"
+                  (click)="demoteToUser(user.id)"
+                  title="Demote to User"
+                >
+                  <i class="icon-arrow-down"></i>
+                </button>
+              }
+              <button
+                class="btn-action danger"
+                (click)="deleteUser(user.id)"
+                title="Delete User"
+              >
+                <i class="icon-trash-2"></i>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Create User Modal -->
+  <app-create-user-modal
+    [isOpen]="showCreateModal()"
+    (close)="closeCreateModal()"
+    (userCreated)="onUserCreated()"
+  ></app-create-user-modal>
+
+  <!-- Edit User Modal -->
+  <app-edit-user-modal
+    [isOpen]="showEditModal()"
+    [user]="selectedUser()"
+    (close)="closeEditModal()"
+    (userUpdated)="onUserUpdated()"
+  ></app-edit-user-modal>
+</div>

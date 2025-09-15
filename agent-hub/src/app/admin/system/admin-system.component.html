@@ -1,0 +1,128 @@
+<div class="admin-system">
+  <div class="system-header">
+    <h2>System Health</h2>
+    <p>Monitor system performance and health metrics</p>
+  </div>
+
+  <div class="health-overview">
+    <div class="overview-card">
+      <div class="card-header">
+        <h3>Overall System Status</h3>
+        <button class="btn-refresh" (click)="refreshAll()" [disabled]="isRefreshing()">
+          <i class="icon-refresh" [class.spinning]="isRefreshing()"></i>
+          Refresh All
+        </button>
+      </div>
+      <div class="system-status" [class]="getOverallHealthClass()">
+        <i class="icon-activity"></i>
+        <span>{{ getOverallHealthText() }}</span>
+      </div>
+      <p class="last-check">Last checked: {{ formatTime(lastUpdate()) }}</p>
+    </div>
+  </div>
+
+  <div class="health-metrics">
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-header">
+          <i class="icon-server"></i>
+          <h4>API Server</h4>
+        </div>
+        <div class="metric-status" [class]="getHealthClass(apiHealth().status)">
+          {{ getHealthText(apiHealth().status) }}
+        </div>
+        <div class="metric-details">
+          <p>Response Time: {{ apiHealth().responseTime }}ms</p>
+          <p>Uptime: {{ apiHealth().uptime }}</p>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <i class="icon-database"></i>
+          <h4>Database</h4>
+        </div>
+        <div class="metric-status" [class]="getHealthClass(dbHealth().status)">
+          {{ getHealthText(dbHealth().status) }}
+        </div>
+        <div class="metric-details">
+          <p>Connections: {{ dbHealth().connections }}</p>
+          <p>Size: {{ dbHealth().size }}</p>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <i class="icon-cpu"></i>
+          <h4>MCP Agents</h4>
+        </div>
+        <div class="metric-status" [class]="getHealthClass(mcpHealth().status)">
+          {{ getHealthText(mcpHealth().status) }}
+        </div>
+        <div class="metric-details">
+          <p>Active Agents: {{ mcpHealth().activeAgents }}</p>
+          <p>Total Tools: {{ mcpHealth().totalTools }}</p>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-header">
+          <i class="icon-hard-drive"></i>
+          <h4>Storage</h4>
+        </div>
+        <div class="metric-status" [class]="getHealthClass(storageHealth().status)">
+          {{ getHealthText(storageHealth().status) }}
+        </div>
+        <div class="metric-details">
+          <p>Used: {{ storageHealth().used }}GB</p>
+          <p>Available: {{ storageHealth().available }}GB</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="system-logs">
+    <div class="logs-header">
+      <h3>Recent System Events</h3>
+      <div class="log-controls">
+        <select [(ngModel)]="logLevel" (change)="filterLogs()">
+          <option value="">All Levels</option>
+          <option value="info">Info</option>
+          <option value="warn">Warning</option>
+          <option value="error">Error</option>
+        </select>
+        <button class="btn-clear" (click)="clearLogs()">
+          <i class="icon-trash-2"></i>
+          Clear
+        </button>
+      </div>
+    </div>
+
+    <div class="logs-container">
+      @if (isLoadingLogs()) {
+        <div class="loading">
+          <i class="icon-loader spinning"></i>
+          Loading system logs...
+        </div>
+      } @else if (filteredLogs().length === 0) {
+        <div class="no-logs">
+          <i class="icon-file-text"></i>
+          <p>No system events found</p>
+        </div>
+      } @else {
+        <div class="logs-list">
+          @for (log of filteredLogs(); track log.id) {
+            <div class="log-entry" [class]="getLogClass(log.level)">
+              <div class="log-time">{{ formatTime(log.timestamp) }}</div>
+              <div class="log-level">{{ log.level.toUpperCase() }}</div>
+              <div class="log-message">{{ log.message }}</div>
+              @if (log.details) {
+                <div class="log-details">{{ log.details }}</div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

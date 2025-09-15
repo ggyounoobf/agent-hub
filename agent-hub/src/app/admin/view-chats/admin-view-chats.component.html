@@ -1,0 +1,196 @@
+<div class="admin-chats">
+  <div class="chats-header">
+    <h2>User Chats</h2>
+    <p>Monitor and manage all user chat sessions</p>
+  </div>
+
+  <div class="chats-filters">
+    <div class="search-box">
+      <i class="icon-search"></i>
+      <input
+        type="text"
+        placeholder="Search by user email or chat title..."
+        [value]="searchTerm()"
+        (input)="onSearchChange($event)"
+      />
+    </div>
+    <select [value]="sortBy()" (change)="onSortChange($event)">
+      <option value="createdAt">Sort by Created Date</option>
+      <option value="updatedAt">Sort by Last Updated</option>
+      <option value="messageCount">Sort by Message Count</option>
+      <option value="userName">Sort by User Name</option>
+    </select>
+  </div>
+
+  <div class="chats-container">
+    @if (isLoading()) {
+      <div class="loading">
+        <i class="icon-loader spinning"></i>
+        Loading chat sessions...
+      </div>
+    } @else if (filteredChats().length === 0) {
+      <div class="no-chats">
+        <i class="icon-message-circle"></i>
+        <h3>No chat sessions found</h3>
+        <p>@if (searchTerm()) {
+          No chats match your search criteria
+        } @else {
+          No chat sessions have been created yet
+        }</p>
+      </div>
+    } @else {
+      <div class="chats-grid">
+        @for (chat of paginatedChats(); track chat.id) {
+          <div class="chat-card">
+            <div class="chat-header">
+              <div class="chat-info">
+                <h3 class="chat-title">{{ chat.title || 'Untitled Chat' }}</h3>
+                <p class="chat-user">
+                  <i class="icon-user"></i>
+                  {{ chat.userName }} ({{ chat.userEmail }})
+                </p>
+              </div>
+              <div class="chat-actions">
+                <button
+                  class="btn-icon view"
+                  (click)="viewChatDetails(chat.id)"
+                  title="View Details"
+                >
+                  <i class="icon-eye"></i>
+                  <span class="btn-text">View</span>
+                </button>
+                <button
+                  class="btn-icon delete"
+                  (click)="deleteChat(chat.id)"
+                  title="Delete Chat"
+                >
+                  <i class="icon-trash"></i>
+                  <span class="btn-text">Delete</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="chat-stats">
+              <div class="stat">
+                <i class="icon-message-square"></i>
+                <span>{{ chat.messageCount }} messages</span>
+              </div>
+              <div class="stat">
+                <i class="icon-calendar"></i>
+                <span>{{ formatDate(chat.createdAt) }}</span>
+              </div>
+              <div class="stat">
+                <i class="icon-clock"></i>
+                <span>Updated {{ getRelativeTime(chat.updatedAt) }}</span>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+      
+      <!-- Pagination Controls -->
+      <div class="pagination-controls" [hidden]="totalPages() <= 1">
+        <button 
+          class="pagination-btn" 
+          (click)="goToPreviousPage()" 
+          [disabled]="currentPage() === 1"
+        >
+          Previous
+        </button>
+        
+        <span class="pagination-info">
+          Page {{ currentPage() }} of {{ totalPages() }}
+          ({{ filteredChats().length }} total chats)
+        </span>
+        
+        <button 
+          class="pagination-btn" 
+          (click)="goToNextPage()" 
+          [disabled]="currentPage() === totalPages()"
+        >
+          Next
+        </button>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Chat Details Modal -->
+@if (selectedChat()) {
+  <div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Chat Details</h3>
+        <button class="btn-close" (click)="closeModal()">
+          <i class="icon-x"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="chat-details">
+          <div class="detail-group">
+            <label>Chat Title:</label>
+            <p>{{ selectedChat()?.title || 'Untitled Chat' }}</p>
+          </div>
+          <div class="detail-group">
+            <label>User:</label>
+            <p>{{ selectedChat()?.userName }} ({{ selectedChat()?.userEmail }})</p>
+          </div>
+          <div class="detail-group">
+            <label>Messages:</label>
+            <p>{{ selectedChat()?.messageCount }} messages</p>
+          </div>
+          <div class="detail-group">
+            <label>Created:</label>
+            <p>{{ formatDate(selectedChat()?.createdAt!) }}</p>
+          </div>
+          <div class="detail-group">
+            <label>Last Updated:</label>
+            <p>{{ formatDate(selectedChat()?.updatedAt!) }}</p>
+          </div>
+          <div class="detail-group queries">
+            <label>Queries:</label>
+            @if (isLoadingQueries()) {
+              <div class="loading-queries">
+                <i class="icon-loader spinning"></i>
+                <span>Loading queries...</span>
+              </div>
+            } @else if (chatQueries().length === 0) {
+              <div class="no-queries">
+                <i class="icon-message-circle"></i>
+                <p>No queries in this chat yet.</p>
+              </div>
+            } @else {
+              <div class="queries-container">
+                @for (q of chatQueries(); track q.id) {
+                  <div class="query-item">
+                    <div class="query-header">
+                      <span class="query-timestamp">{{ formatDate(q.created_at) }}</span>
+                      @if (q.agent_used) {
+                        <span class="agent-badge">{{ q.agent_used }}</span>
+                      }
+                      @if (q.status) {
+                        <span class="status-badge" [class]="q.status.toLowerCase()">{{ q.status }}</span>
+                      }
+                    </div>
+                    <div class="query-content">
+                      <div class="query-message">
+                        <strong>Q:</strong> {{ q.message }}
+                      </div>
+                      <div class="query-response">
+                        <strong>A:</strong> {{ q.response }}
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeModal()">Close</button>
+        <button class="btn-danger" (click)="deleteChat(selectedChat()!.id)">Delete Chat</button>
+      </div>
+    </div>
+  </div>
+}

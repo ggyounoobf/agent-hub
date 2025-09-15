@@ -1,0 +1,74 @@
+<div class="admin-panel">
+  <div class="admin-header">
+    <h1 class="admin-title">
+      <i class="icon-shield"></i>
+      Admin Panel
+    </h1>
+    <p class="admin-subtitle">Manage your Agent Hub system</p>
+  </div>
+
+  <div class="admin-navigation">
+    <nav class="admin-nav">
+      <a
+        routerLink="/admin/overview"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+        <i class="icon-dashboard"></i>
+        <span>Overview</span>
+      </a>
+      <a
+        routerLink="/admin/analytics"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+        <i class="icon-activity"></i>
+        <span>Analytics</span>
+      </a>
+      <a
+        routerLink="/admin/view-chats"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+        <i class="icon-message-circle"></i>
+        <span>View Chats</span>
+      </a>
+      <a
+        routerLink="/admin/agents"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+        <i class="icon-cpu"></i>
+        <span>Agents & Tools</span>
+      </a>
+      <a
+        routerLink="/admin/users"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+        <i class="icon-users"></i>
+        <span>User Management</span>
+      </a>
+      <a
+        routerLink="/admin/system"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+        <i class="icon-settings"></i>
+        <span>System Health</span>
+      </a>
+      <a
+        routerLink="/admin/activity"
+        routerLinkActive="active"
+        class="nav-item"
+      >
+        <i class="icon-file-text"></i>
+        <span>Activity Logs</span>
+      </a>
+    </nav>
+  </div>
+
+  <div class="admin-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -1,0 +1,97 @@
+@use 'typography';
+@use 'screen-breakpoints' as sb;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+
+  .title {
+    @extend %heading-100;
+
+    span {
+      background: linear-gradient(135deg, #dd0031 0%, #c3002f 50%, #dd0031 100%);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shimmer 3s ease-in-out infinite;
+    }
+  }
+
+  .subtitle {
+    @extend %heading-400;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .agent-selection-info {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(221, 0, 49, 0.05);
+    border: 1px solid rgba(221, 0, 49, 0.2);
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.9);
+    
+    p {
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+  }
+
+  .msgs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-top: 2rem;
+
+    @include sb.bp-600w {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    button {
+      @extend %body-short-01;
+      display: flex;
+      text-align: left;
+      background: rgba(221, 0, 49, 0.05);
+      border: 1px solid rgba(221, 0, 49, 0.2);
+      border-radius: 4px;
+      padding: 1rem;
+      transition: all 0.3s ease;
+      color: rgba(255, 255, 255, 0.9);
+
+      &:hover {
+        background: rgba(221, 0, 49, 0.1);
+        border-color: rgba(221, 0, 49, 0.4);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 15px rgba(221, 0, 49, 0.2);
+      }
+
+      &:active {
+        background: rgba(221, 0, 49, 0.15);
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+// Animations
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  50% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

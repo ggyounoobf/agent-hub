@@ -1,0 +1,31 @@
+@use 'typography';
+
+:host {
+  display: block;
+
+  footer {
+    @extend %body-short-03;
+    color: rgba(255, 255, 255, 0.5);
+    white-space: nowrap;
+    text-align: center;
+    padding: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    p:first-of-type {
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    p:last-of-type {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    ngx-icon {
+      display: inline-block;
+      vertical-align: bottom;
+      color: #dd0031;
+    }
+  }
+}

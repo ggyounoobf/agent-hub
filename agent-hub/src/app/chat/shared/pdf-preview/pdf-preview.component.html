@@ -1,0 +1,33 @@
+@if (isOpen()) {
+  <div class="pdf-preview-modal">
+    <div class="modal-overlay" (click)="onClose()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>{{ fileName() }}</h3>
+        <button class="close-button" (click)="onClose()">
+          <ngx-icon name="Close" size="lg" />
+        </button>
+      </div>
+      
+      <div class="pdf-container">
+        @if (isLoading()) {
+          <div class="loading">
+            <div class="spinner"></div>
+            <p>Loading PDF...</p>
+          </div>
+        }
+        @if (error()) {
+          <div class="error">
+            <p>{{ error() }}</p>
+          </div>
+        }
+        <!-- PDF viewer would go here -->
+        <div class="pdf-placeholder">
+          <ngx-icon name="Routine" size="lg" />
+          <p>PDF preview would be displayed here</p>
+          <p class="note">In a full implementation, this would show the actual PDF content</p>
+        </div>
+      </div>
+    </div>
+  </div>
+}

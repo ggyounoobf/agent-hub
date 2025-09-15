@@ -1,0 +1,127 @@
+<div class="admin-activity">
+  <div class="activity-header">
+    <h2>Activity Logs</h2>
+    <p>Monitor and audit all system activities</p>
+  </div>
+
+  <div class="activity-controls">
+    <div class="filters">
+      <div class="filter-group">
+        <label for="activity-type">Event Type</label>
+        <select id="activity-type" [(ngModel)]="selectedTypes" (change)="onTypeFilterChange()" multiple>
+          <option value="user">User Events</option>
+          <option value="chat">Chat Events</option>
+          <option value="agent">Agent Events</option>
+          <option value="system">System Events</option>
+        </select>
+      </div>
+      
+      <div class="filter-group date-range">
+        <label>Date Range</label>
+        <div class="date-inputs">
+          <input 
+            type="datetime-local" 
+            [(ngModel)]="startTime" 
+            (change)="onDateRangeChange()">
+          <span>to</span>
+          <input 
+            type="datetime-local" 
+            [(ngModel)]="endTime" 
+            (change)="onDateRangeChange()">
+        </div>
+      </div>
+    </div>
+    
+    <div class="search-controls">
+      <div class="search-box">
+        <i class="icon-search"></i>
+        <input
+          type="text"
+          placeholder="Search in activity descriptions..."
+          [(ngModel)]="searchQuery"
+          (input)="onSearchChange()"
+        />
+      </div>
+      
+      <div class="action-buttons">
+        <button class="btn-reset" (click)="resetFilters()" [disabled]="isLoading()">
+          <i class="icon-x"></i>
+          Reset Filters
+        </button>
+        <button class="btn-refresh" (click)="refreshLogs()" [disabled]="isLoading()">
+          <i class="icon-refresh" [class.spinning]="isLoading()"></i>
+          Refresh
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="activity-container">
+    @if (isLoading()) {
+      <div class="loading">
+        <i class="icon-loader spinning"></i>
+        Loading activity logs...
+      </div>
+    } @else if (activityLogs().length === 0) {
+      <div class="no-logs">
+        <i class="icon-activity"></i>
+        <h3>No activity logs found</h3>
+        <p>Try adjusting your filters or check back later for new activities</p>
+      </div>
+    } @else {
+      <div class="logs-table">
+        <div class="table-header">
+          <div class="col-type">Type</div>
+          <div class="col-description">Description</div>
+          <div class="col-timestamp">Timestamp</div>
+        </div>
+        
+        @for (log of activityLogs(); track log.id) {
+          <div class="table-row" [class]="getLogTypeClass(log.type)">
+            <div class="col-type">
+              <span class="type-badge" [class]="getLogTypeClass(log.type)">
+                {{ log.type }}
+              </span>
+            </div>
+            <div class="col-description">
+              <p>{{ log.description }}</p>
+              @if (log.metadata && (log.metadata | json) !== '{}') {
+                <div class="metadata" (click)="toggleMetadata(log.id)">
+                  <span class="metadata-toggle">
+                    {{ expandedLogs().has(log.id) ? 'Hide' : 'Show' }} metadata
+                  </span>
+                </div>
+                @if (expandedLogs().has(log.id)) {
+                  <div class="metadata-details">
+                    <pre>{{ formatMetadata(log.metadata) }}</pre>
+                  </div>
+                }
+              }
+            </div>
+            <div class="col-timestamp">
+              {{ formatTimestamp(log.timestamp) }}
+            </div>
+          </div>
+        }
+      </div>
+      
+      <div class="pagination">
+        <button 
+          class="btn-prev" 
+          (click)="previousPage()" 
+          [disabled]="currentPage() <= 1 || isLoading()">
+          Previous
+        </button>
+        <span class="page-info">
+          Page {{ currentPage() }} of {{ totalPages() }}
+        </span>
+        <button 
+          class="btn-next" 
+          (click)="nextPage()" 
+          [disabled]="currentPage() >= totalPages() || isLoading()">
+          Next
+        </button>
+      </div>
+    }
+  </div>
+</div>

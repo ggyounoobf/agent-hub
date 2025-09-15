@@ -1,0 +1,100 @@
+@if (isOpen) {
+  <div class="modal-overlay" (click)="onClose()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Edit User</h3>
+        <button class="btn-close" (click)="onClose()">
+          <i class="icon-x"></i>
+        </button>
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+        <div class="modal-body">
+          @if (errorMessage()) {
+            <div class="alert alert-error">
+              <i class="icon-alert-circle"></i>
+              {{ errorMessage() }}
+            </div>
+          }
+
+          <div class="form-group">
+            <label for="fullName">Full Name *</label>
+            <input
+              type="text"
+              id="fullName"
+              [(ngModel)]="formData.full_name"
+              name="fullName"
+              placeholder="Enter full name"
+              required
+              [disabled]="isLoading()"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input
+              type="email"
+              id="email"
+              [(ngModel)]="formData.email"
+              name="email"
+              placeholder="Enter email address"
+              required
+              email
+              [disabled]="isLoading()"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="role">Role</label>
+            <select
+              id="role"
+              [(ngModel)]="formData.role"
+              name="role"
+              [disabled]="isLoading()"
+            >
+              <option [value]="UserRole.USER">User</option>
+              <option [value]="UserRole.ADMIN">Admin</option>
+            </select>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                [(ngModel)]="formData.is_active"
+                name="isActive"
+                [disabled]="isLoading()"
+              />
+              <span class="checkmark"></span>
+              Active User
+            </label>
+            <p class="help-text">Inactive users cannot log in to the system</p>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="onClose()"
+            [disabled]="isLoading()"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="!isFormValid() || isLoading()"
+          >
+            @if (isLoading()) {
+              <i class="icon-loader spinning"></i>
+              Updating...
+            } @else {
+              Update User
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

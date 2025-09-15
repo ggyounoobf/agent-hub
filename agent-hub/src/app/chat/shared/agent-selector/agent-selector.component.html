@@ -1,0 +1,222 @@
+<div class="agent-selector" [class.open]="isOpen">
+  <!-- Mobile: Clean button design -->
+  @if (!isDesktop) {
+    <div class="mobile-selector">
+      <!-- Main Select Button -->
+      <button
+        class="select-agents-button"
+        (click)="toggleDropdown()"
+        [disabled]="loading()"
+      >
+        Select Agents
+        @if (isAdmin) {
+          <span class="admin-badge">Admin</span>
+        }
+      </button>
+
+      <!-- Floating Selected Indicator -->
+      @if (selectedAgents().length > 0) {
+        <button class="selected-floating-button" (click)="showSelectedAgents()">
+          {{ selectedAgents().length }} Agent{{ selectedAgents().length > 1 ? 's' : '' }}
+        </button>
+      }
+    </div>
+  } @else {
+    <!-- Desktop: Original dropdown button -->
+    <button
+      #selectorButton
+      class="selector-button"
+      (click)="toggleDropdown()"
+      [disabled]="loading()"
+    >
+      <div class="selector-content">
+        <span class="selector-text">{{ selectedAgentNames }}</span>
+        @if (isAdmin) {
+          <span class="admin-badge">Admin</span>
+        }
+        <div class="selector-badge">
+          <svg class="selector-icon" [class.rotated]="isOpen" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+    </button>
+  }
+
+  <!-- Desktop Dropdown Panel -->
+  @if (isOpen && isDesktop) {
+    <div #dropdownPanel class="dropdown-panel desktop">
+      <!-- Search Input -->
+      <div class="search-container">
+        <input
+          type="text"
+          placeholder="Search agents"
+          class="search-input"
+          [value]="searchTerm"
+          (input)="onSearchChange($event)"
+        />
+        <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+        </svg>
+      </div>
+
+      <!-- Admin Controls -->
+      @if (isAdmin) {
+        <div class="admin-controls">
+          <button class="select-all-button" (click)="selectAllAgents()">
+            Select All Agents
+          </button>
+        </div>
+      }
+
+      <!-- Agent List -->
+      <div class="agents-list">
+        @if (loading()) {
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <span>Loading agents...</span>
+          </div>
+        } @else if (error()) {
+          <div class="error-state">
+            <span>{{ error() }}</span>
+            <button class="retry-button" (click)="ngOnInit()">Retry</button>
+          </div>
+        } @else {
+          @for (agent of filteredAgents; track agent.id) {
+            <label class="agent-item" [class.selected]="agent.isSelected">
+              <!-- Left side: Agent content -->
+              <div class="agent-content">
+                <h4 class="agent-name">{{ agent.displayName }}</h4>
+                <p class="agent-description">{{ agent.description }}</p>
+              </div>
+
+              <!-- Right side: Controls -->
+              <div class="agent-controls">
+                <span class="tool-count">{{ agent.tools.length }} tools</span>
+                <input
+                  type="checkbox"
+                  [ngModel]="agent.isSelected"
+                  (change)="onAgentToggle(agent.id)"
+                  class="agent-checkbox"
+                />
+              </div>
+            </label>
+          } @empty {
+            <div class="empty-state">
+              <span>No agents found</span>
+            </div>
+          }
+        }
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="clear-button" (click)="clearSelection()">
+          Clear
+        </button>
+        <button class="apply-button" (click)="applySelection()">
+          Apply
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Mobile Modal -->
+  @if (isOpen && !isDesktop) {
+    <div class="mobile-modal-overlay" (click)="closeDropdown()">
+      <div class="mobile-modal" (click)="$event.stopPropagation()">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <div class="modal-title-section">
+            <h3 class="modal-title">Select Agents</h3>
+            @if (isAdmin) {
+              <span class="admin-badge">Admin</span>
+            }
+            <div class="selection-count" [class.has-selection]="selectedAgents().length > 0">
+              {{ selectedAgents().length }} selected
+            </div>
+          </div>
+          <button class="close-button" (click)="closeDropdown()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Search Input -->
+        <div class="search-container">
+          <input
+            type="text"
+            placeholder="Search agents"
+            class="search-input"
+            [value]="searchTerm"
+            (input)="onSearchChange($event)"
+          />
+          <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+          </svg>
+        </div>
+
+        <!-- Admin Controls -->
+        @if (isAdmin) {
+          <div class="admin-controls">
+            <button class="select-all-button" (click)="selectAllAgents()">
+              Select All Agents
+            </button>
+          </div>
+        }
+
+        <!-- Agent List -->
+        <div class="agents-list">
+          @if (loading()) {
+            <div class="loading-state">
+              <div class="spinner"></div>
+              <span>Loading agents...</span>
+            </div>
+          } @else if (error()) {
+            <div class="error-state">
+              <span>{{ error() }}</span>
+              <button class="retry-button" (click)="ngOnInit()">Retry</button>
+            </div>
+          } @else {
+            @for (agent of filteredAgents; track agent.id) {
+              <label class="agent-item" [class.selected]="agent.isSelected">
+                <!-- Left side: Agent content -->
+                <div class="agent-content">
+                  <h4 class="agent-name">{{ agent.displayName }}</h4>
+                  <p class="agent-description">{{ agent.description }}</p>
+                </div>
+
+                <!-- Right side: Controls -->
+                <div class="agent-controls">
+                  <span class="tool-count">{{ agent.tools.length }} tools</span>
+                  <input
+                    type="checkbox"
+                    [ngModel]="agent.isSelected"
+                    (change)="onAgentToggle(agent.id)"
+                    class="agent-checkbox"
+                  />
+                </div>
+              </label>
+            } @empty {
+              <div class="empty-state">
+                <span>No agents found</span>
+              </div>
+            }
+          }
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button class="clear-button" (click)="clearSelection()">
+            Clear
+          </button>
+          <button class="apply-button" (click)="applySelection()">
+            Apply
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

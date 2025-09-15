@@ -1,0 +1,194 @@
+[project]
+name = "mcp-tools-server"
+version = "0.1.0"
+description = "Tool server for MCP using FastAPI and MCP tools"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "fastmcp",
+  "rich",
+  "pydantic",
+  "python-dotenv",
+  "httpx",
+  # Web scraping dependencies
+  "requests>=2.31.0",
+  "beautifulsoup4>=4.12.0",
+  "lxml>=4.9.0",
+  "html5lib>=1.1",
+  "selenium>=4.15.0",
+  "playwright>=1.40.0",
+  # Text processing
+  "chardet>=5.2.0",
+  "python-dateutil>=2.8.0",
+  # Content analysis (optional but useful)
+  "readability-lxml>=0.8.1",
+  "newspaper3k>=0.2.8",
+  # Additional utilities
+  "tldextract>=5.0.0",  # Extract domain components
+  "user-agents>=2.2.0",  # Random user agents
+  "aiohttp",
+  "PyJWT",
+  "pypdf",
+  "PyMuPDF",
+  # === For lightweight RAG ===
+  "sentence-transformers>=2.2.2",
+  "chromadb>=0.4.22",
+  "faiss-cpu>=1.7.4",  # or faiss-gpu if needed
+  "numpy>=1.26.0",
+  "pandas>=2.2.0",
+  # === Security Tools Dependencies ===
+  # Core networking and crypto
+  "cryptography>=41.0.0",  # SSL/TLS certificate analysis
+  "pyOpenSSL>=23.3.0",     # SSL certificate handling
+  "certifi>=2023.11.17",   # Certificate authorities bundle
+  # DNS analysis
+  "dnspython>=2.4.0",      # DNS queries and DNSSEC validation
+  "publicsuffix2>=2.20191221",  # Domain validation
+  # HTTP security headers analysis
+  "validators>=0.22.0",    # URL and domain validation
+  # Async support for concurrent scanning
+  "asyncio-throttle>=1.0.2",  # Rate limiting for ethical scanning
+  # Security-specific utilities
+  "python-whois>=0.8.0",   # WHOIS lookups for domain info
+  "ipwhois>=1.2.0",        # IP address information
+  # Date/time handling for certificate expiration
+  "python-dateutil>=2.8.2",
+  # Additional validation and parsing
+  "idna>=3.6",             # International domain names
+  "urllib3>=2.1.0",        # HTTP client utilities
+  # Optional: Enhanced SSL/TLS analysis
+  "sslyze>=5.2.0",         # Advanced SSL/TLS scanner (optional)
+  # Performance monitoring
+  "psutil>=5.9.0",         # System resource monitoring
+  # Report generation
+  "jinja2>=3.1.0",         # Template engine for HTML reports
+  "markdown>=3.5.0",       # Markdown processing
+  # JSON schema validation
+  "jsonschema>=4.20.0",    # Validate configuration schemas
+]
+
+[project.optional-dependencies]
+gpu = [
+  # Note: faiss-gpu may not be available for Python 3.12+
+  # Consider using Python 3.10 or 3.11 for GPU support
+  # "faiss-gpu>=1.7.0,<1.8.0; python_version<'3.12'
+]
+
+# Enhanced security scanning (optional heavy dependencies)
+security-enhanced = [
+  "sslyze>=5.2.0",         # Advanced SSL/TLS analysis
+  "cryptography>=41.0.0",  # Enhanced crypto support
+  "scapy>=2.5.0",          # Network packet analysis (advanced)
+  "python-nmap>=0.7.1",    # Network mapping (use carefully)
+]
+
+# Development and testing dependencies
+dev = [
+  "pytest>=7.4.0",
+  "pytest-asyncio>=0.21.0",
+  "pytest-cov>=4.1.0",
+  "black>=23.0.0",
+  "isort>=5.12.0",
+  "flake8>=6.0.0",
+  "mypy>=1.7.0",
+  "pre-commit>=3.5.0",
+]
+
+# Documentation dependencies
+docs = [
+  "mkdocs>=1.5.0",
+  "mkdocs-material>=9.4.0",
+  "mkdocstrings>=0.24.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["tools*", "shared*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.txt", "*.md", "*.json", "*.yaml", "*.yml"]
+
+[tool.black]
+line-length = 100
+target-version = ['py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 100
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = [
+    "tests",
+]
+asyncio_mode = "auto"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "security: marks tests for security tools",
+]
+
+[tool.coverage.run]
+source = ["tools", "shared"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/__pycache__/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    'class .*\\bProtocol\\):',
+    "@(abc\\.)?abstractmethod",
+]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.3.0",
+]

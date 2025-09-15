@@ -1,0 +1,61 @@
+<div class="row user">
+  <div class="vis" title="User">
+    <ngx-icon name="Face" size="xlg" />
+  </div>
+  <div class="message-container">
+    <p class="msg" [class.animated]="!query().response">
+      {{ query().message }}
+    </p>
+    <!-- Only show file preview for user messages that have files -->
+    @if (query().filesUploaded && query().filesUploaded!.length > 0) {
+      <acb-file-preview 
+        [chatId]="query().chatId || ''"
+        [queryId]="query().id"
+        [filesUploaded]="query().filesUploaded!"
+        (filePreview)="onFilePreview($event)" />
+    }
+  </div>
+</div>
+<div class="row bot">
+  <div class="vis" title="Chatbot">
+    <ngx-icon name="SmartToy" size="xlg" />
+  </div>
+  <div class="message-container">
+    @if (query().response) {
+      <p
+        class="msg acb-chat-msg"
+        [class.animated]="isNew()"
+        [innerHTML]="query().response | markdown"
+      ></p>
+    } @else if (query().status === 'failed') {
+      <div class="msg error-message">
+        <div class="error-header">
+          <ngx-icon name="Info" />
+          <span>Query Failed</span>
+        </div>
+        @if (query().errorMessage) {
+          <p class="error-details">{{ query().errorMessage }}</p>
+        } @else {
+          <p class="error-details">An error occurred while processing your request. Please try again.</p>
+        }
+      </div>
+    } @else {
+      <acb-query-skeleton class="msg" [lines]="2" [linesOnly]="true" />
+    }
+  </div>
+</div>
+
+<!-- PDF Viewer Modal -->
+<acb-pdf-viewer 
+  [fileId]="selectedFile()?.id || ''" 
+  [fileName]="selectedFile()?.name || ''"
+  [isOpen]="showPdfViewer()" 
+  (close)="closePdfViewer()" />
+
+<!-- Image Modal -->
+<acb-image-modal
+  [isOpen]="showImageModal()"
+  [imageUrl]="selectedImageUrl()"
+  [imageTitle]="selectedImageTitle()"
+  [imageAlt]="selectedImageAlt()"
+  (close)="closeImageModal()" />

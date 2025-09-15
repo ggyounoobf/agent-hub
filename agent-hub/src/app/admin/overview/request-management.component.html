@@ -1,0 +1,164 @@
+<div class="request-management-container">
+  <div class="header-section">
+    <div class="header-content">
+      <h2 class="section-title">Pending Access Requests</h2>
+      <p class="section-description">Review and manage agent access requests from users</p>
+    </div>
+    <div class="header-actions">
+      <button 
+        class="refresh-btn" 
+        (click)="loadPendingRequests()"
+        [disabled]="isLoading() || isProcessing()"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+          <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+        </svg>
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Search and Filters -->
+  <div class="search-filters-section">
+    <div class="search-container">
+      <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search by agent name or request ID..."
+        [value]="searchQuery()"
+        (input)="onSearchInput($event)"
+      />
+      @if (searchQuery()) {
+        <button class="clear-search-btn" (click)="clearSearch()" title="Clear search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Bulk Actions -->
+  @if (selectedCount() > 0) {
+    <div class="bulk-actions-section">
+      <div class="bulk-info">
+        <span>{{ selectedCount() }} request{{ selectedCount() !== 1 ? 's' : '' }} selected</span>
+        <button class="clear-selection-btn" (click)="clearSelection()">Clear</button>
+      </div>
+      <div class="bulk-actions">
+        <button 
+          class="bulk-approve-btn" 
+          (click)="bulkApprove()"
+          [disabled]="isProcessing()"
+        >
+          Approve Selected
+        </button>
+        <button 
+          class="bulk-reject-btn" 
+          (click)="bulkReject()"
+          [disabled]="isProcessing()"
+        >
+          Reject Selected
+        </button>
+        <div class="rejection-reason-input">
+          <input
+            type="text"
+            class="rejection-reason-field"
+            placeholder="Rejection reason (optional)"
+            [value]="getBulkRejectionReason()"
+            (input)="onBulkRejectionReasonChange($any($event.target).value)"
+          />
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Requests List -->
+  <div class="requests-section">
+    @if (isLoading()) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading pending requests...</p>
+      </div>
+    } @else if (filteredAndSearchedRequests().length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h3>No pending requests</h3>
+        <p>There are currently no pending access requests to review.</p>
+      </div>
+    } @else {
+      <div class="requests-list">
+        @for (request of filteredAndSearchedRequests(); track request.id) {
+          <div class="request-card" [class.selected]="selectedRequests().has(request.id)">
+            <div class="request-header">
+              <div class="selection-control">
+                <input
+                  type="checkbox"
+                  [checked]="selectedRequests().has(request.id)"
+                  (change)="toggleRequestSelection(request.id)"
+                  class="selection-checkbox"
+                />
+              </div>
+              <div class="request-info">
+                <div class="agent-info">
+                  <h4 class="agent-name">{{ request.agent_name }}</h4>
+                  <span class="request-id">ID: {{ request.id }}</span>
+                </div>
+                <div class="request-meta">
+                  <span class="request-date" [title]="formatDate(request.created_at)">
+                    {{ getTimeAgo(request.created_at) }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="request-actions">
+              <button 
+                class="approve-btn" 
+                (click)="approveRequest(request.id)"
+                [disabled]="isProcessing()"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20,6 9,17 4,12"></polyline>
+                </svg>
+                Approve
+              </button>
+              <button 
+                class="reject-btn" 
+                (click)="rejectRequest(request.id)"
+                [disabled]="isProcessing()"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+                Reject
+              </button>
+              <div class="rejection-reason-input">
+                <input
+                  type="text"
+                  class="rejection-reason-field"
+                  placeholder="Rejection reason (optional)"
+                  [value]="getRejectionReason(request.id)"
+                  (input)="setRejectionReason(request.id, $any($event.target).value)"
+                />
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

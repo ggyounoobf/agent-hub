@@ -1,0 +1,38 @@
+[project]
+name = "agent-hub-api"
+version = "0.1.0"
+description = "FastAPI application that integrates with OpenAI"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi",
+    "rich",
+    "uvicorn[standard]",
+    "openai",
+    "pydantic[email]",
+    "python-dotenv",
+    "llama-index",
+    "llama-index-tools-mcp",
+    "llama-index-llms-azure-openai",
+    "llama-index-llms-ollama",
+    "PyPDF2",
+    "sqlalchemy",
+    "aiosqlite",
+    "alembic",
+    "python-jose[cryptography]",
+    "python-multipart",
+    "httpx",
+    "passlib[bcrypt]",
+    "email-validator",
+    "faker",
+    "starlette",
+    "click",
+    "h11",
+    "websockets",
+    "watchfiles",
+    "pyyaml"
+]
+
+[tool.setuptools.packages.find]
+include = ["app*"]   # Only package the app module
+exclude = ["logs*"]  # Explicitly ignore logs

@@ -1,0 +1,233 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  border-bottom: 1px solid #e5e7eb;
+
+  h3 {
+    margin: 0;
+    color: #111827;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .btn-close {
+    background: none;
+    border: none;
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #6b7280;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: #f3f4f6;
+      color: #374151;
+    }
+
+    i {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #374151;
+    font-size: 0.875rem;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    &:disabled {
+      background-color: #f9fafb;
+      color: #6b7280;
+      cursor: not-allowed;
+    }
+  }
+
+  &.checkbox-group {
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      padding-left: 32px;
+
+      input[type="checkbox"] {
+        position: absolute;
+        left: 0;
+        opacity: 0;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+      }
+
+      .checkmark {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        background-color: white;
+        border: 2px solid #d1d5db;
+        border-radius: 4px;
+        transition: all 0.2s;
+
+        &:after {
+          content: "";
+          position: absolute;
+          display: none;
+          left: 6px;
+          top: 2px;
+          width: 6px;
+          height: 10px;
+          border: solid white;
+          border-width: 0 2px 2px 0;
+          transform: rotate(45deg);
+        }
+      }
+
+      input:checked ~ .checkmark {
+        background-color: #3b82f6;
+        border-color: #3b82f6;
+
+        &:after {
+          display: block;
+        }
+      }
+
+      input:disabled ~ .checkmark {
+        background-color: #f9fafb;
+        border-color: #d1d5db;
+      }
+    }
+
+    .help-text {
+      margin-top: 4px;
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+  }
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 24px;
+  border-top: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+
+  button {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    &.btn-secondary {
+      background-color: white;
+      color: #374151;
+      border: 1px solid #d1d5db;
+
+      &:hover:not(:disabled) {
+        background-color: #f9fafb;
+      }
+    }
+
+    &.btn-primary {
+      background-color: #3b82f6;
+      color: white;
+
+      &:hover:not(:disabled) {
+        background-color: #2563eb;
+      }
+    }
+
+    .spinning {
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
+.alert {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+
+  &.alert-error {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

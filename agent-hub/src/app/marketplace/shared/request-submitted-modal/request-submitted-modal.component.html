@@ -1,0 +1,46 @@
+<ngx-modal-content [controller]="ctrl">
+  <ng-container title></ng-container>
+
+  <ng-container content>
+    <div class="request-submitted">
+      <!-- Success Icon -->
+      <div class="success-icon">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          <path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <h2 class="title">Request Submitted</h2>
+        <p class="message">
+          Your request for access has been submitted and is pending approval.
+        </p>
+
+        <!-- Request Details -->
+        <div class="request-details">
+          <div class="detail-item">
+            <span class="detail-label">Tool:</span>
+            <span class="detail-value">{{ data.request.toolName }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Access Level:</span>
+            <span class="detail-value">{{ data.request.accessLevel }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Status:</span>
+            <span class="detail-value status-pending">{{ data.request.status }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action -->
+      <div class="actions">
+        <button class="ok-button" (click)="onOk()">
+          OK
+        </button>
+      </div>
+    </div>
+  </ng-container>
+</ngx-modal-content>

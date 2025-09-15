@@ -1,0 +1,302 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="logo-section">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" width="40" height="40">
+          <path d="M12 2L2 7v10c0 5.55 3.84 9.739 9 11 5.16-1.261 9-5.45 9-11V7l-10-5z" fill="#8B5CF6"/>
+          <path d="M12 7L7 9.5v5c0 2.775 1.92 4.87 4.5 5.5 2.58-.63 4.5-2.725 4.5-5.5v-5L12 7z" fill="#ffffff"/>
+        </svg>
+      </div>
+      <h1>Agent Hub</h1>
+    </div>
+
+    <div class="login-content">
+      @if (isLoading()) {
+        <div class="loading">
+          <div class="spinner"></div>
+          <p>Initializing...</p>
+        </div>
+      } @else {
+        <div class="auth-tabs">
+          <button
+            class="tab-button"
+            [class.active]="activeTab === 'login'"
+            (click)="switchTab('login')"
+          >
+            Log in
+          </button>
+          <button
+            class="tab-button"
+            [class.active]="activeTab === 'signup'"
+            (click)="switchTab('signup')"
+          >
+            Sign up
+          </button>
+        </div>
+
+        <div class="auth-form">
+          @if (activeTab === 'login') {
+            <form (ngSubmit)="onLoginSubmit()" #loginForm="ngForm">
+              <div class="form-group">
+                <label for="loginEmail">Email address</label>
+                <input
+                  type="email"
+                  id="loginEmail"
+                  name="email"
+                  [(ngModel)]="loginData.email"
+                  #loginEmailInput="ngModel"
+                  required
+                  email
+                  autocomplete="email"
+                  [class.error]="loginEmailInput.invalid && loginEmailInput.touched"
+                  (input)="clearMessages()"
+                />
+                @if (loginEmailInput.invalid && loginEmailInput.touched) {
+                  <span class="error-text">Please enter a valid email address</span>
+                }
+              </div>
+
+              <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <div class="password-input">
+                  <input
+                    [type]="showLoginPassword ? 'text' : 'password'"
+                    id="loginPassword"
+                    name="password"
+                    [(ngModel)]="loginData.password"
+                    #loginPasswordInput="ngModel"
+                    required
+                    autocomplete="current-password"
+                    [class.error]="loginPasswordInput.invalid && loginPasswordInput.touched"
+                    (input)="clearMessages()"
+                  />
+                  <button
+                    type="button"
+                    class="password-toggle"
+                    (click)="showLoginPassword = !showLoginPassword"
+                    tabindex="-1"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      @if (showLoginPassword) {
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                        <line x1="1" y1="1" x2="23" y2="23"/>
+                      } @else {
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                      }
+                    </svg>
+                  </button>
+                </div>
+                @if (loginPasswordInput.invalid && loginPasswordInput.touched) {
+                  <span class="error-text">Password is required</span>
+                }
+              </div>
+
+              <button
+                type="submit"
+                class="primary-btn"
+                [disabled]="loginForm.invalid || isLoggingIn"
+              >
+                @if (isLoggingIn) {
+                  <span class="button-spinner"></span>
+                  Logging in...
+                } @else {
+                  Continue
+                }
+              </button>
+            </form>
+          }
+
+          @if (activeTab === 'signup') {
+            <form (ngSubmit)="onSignupSubmit()" #signupForm="ngForm">
+              <div class="form-group">
+                <label for="signupName">Full Name</label>
+                <input
+                  type="text"
+                  id="signupName"
+                  name="name"
+                  [(ngModel)]="signupData.name"
+                  #signupNameInput="ngModel"
+                  required
+                  minlength="2"
+                  autocomplete="name"
+                  [class.error]="signupNameInput.invalid && signupNameInput.touched"
+                  (input)="clearMessages()"
+                />
+                @if (signupNameInput.invalid && signupNameInput.touched) {
+                  <span class="error-text">Name must be at least 2 characters</span>
+                }
+              </div>
+
+              <div class="form-group">
+                <label for="signupEmail">Email address</label>
+                <input
+                  type="email"
+                  id="signupEmail"
+                  name="email"
+                  [(ngModel)]="signupData.email"
+                  #signupEmailInput="ngModel"
+                  required
+                  email
+                  autocomplete="email"
+                  [class.error]="signupEmailInput.invalid && signupEmailInput.touched"
+                  (input)="clearMessages()"
+                />
+                @if (signupEmailInput.invalid && signupEmailInput.touched) {
+                  <span class="error-text">Please enter a valid email address</span>
+                }
+              </div>
+
+              <div class="form-group">
+                <label for="signupPassword">Password</label>
+                <div class="password-input">
+                  <input
+                    [type]="showSignupPassword ? 'text' : 'password'"
+                    id="signupPassword"
+                    name="password"
+                    [(ngModel)]="signupData.password"
+                    #signupPasswordInput="ngModel"
+                    required
+                    minlength="8"
+                    autocomplete="new-password"
+                    [class.error]="signupPasswordInput.invalid && signupPasswordInput.touched"
+                    (input)="clearMessages()"
+                  />
+                  <button
+                    type="button"
+                    class="password-toggle"
+                    (click)="showSignupPassword = !showSignupPassword"
+                    tabindex="-1"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      @if (showSignupPassword) {
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                        <line x1="1" y1="1" x2="23" y2="23"/>
+                      } @else {
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                      }
+                    </svg>
+                  </button>
+                </div>
+                @if (signupPasswordInput.invalid && signupPasswordInput.touched) {
+                  <span class="error-text">Password must be at least 8 characters</span>
+                }
+              </div>
+
+              <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="password-input">
+                  <input
+                    [type]="showConfirmPassword ? 'text' : 'password'"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    [(ngModel)]="signupData.confirmPassword"
+                    #confirmPasswordInput="ngModel"
+                    required
+                    autocomplete="new-password"
+                    [class.error]="(confirmPasswordInput.invalid || !passwordsMatch()) && confirmPasswordInput.touched"
+                    (input)="clearMessages()"
+                  />
+                  <button
+                    type="button"
+                    class="password-toggle"
+                    (click)="showConfirmPassword = !showConfirmPassword"
+                    tabindex="-1"
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      @if (showConfirmPassword) {
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                        <line x1="1" y1="1" x2="23" y2="23"/>
+                      } @else {
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                      }
+                    </svg>
+                  </button>
+                </div>
+                @if ((confirmPasswordInput.invalid || !passwordsMatch()) && confirmPasswordInput.touched) {
+                  <span class="error-text">Passwords do not match</span>
+                }
+              </div>
+
+              <button
+                type="submit"
+                class="primary-btn"
+                [disabled]="signupForm.invalid || !passwordsMatch() || isSigningUp"
+              >
+                @if (isSigningUp) {
+                  <span class="button-spinner"></span>
+                  Creating account...
+                } @else {
+                  Create Account
+                }
+              </button>
+            </form>
+          }
+
+          <div class="divider">
+            <span>or</span>
+          </div>
+
+          <div class="social-login">
+            <button
+              class="github-btn"
+              (click)="loginWithGitHub()"
+              [disabled]="isLoggingIn || isSigningUp"
+            >
+              @if (isLoggingIn) {
+                <span class="button-spinner"></span>
+                Connecting to GitHub...
+              } @else {
+                <svg class="github-icon" viewBox="0 0 16 16" width="20" height="20">
+                  <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+                </svg>
+                Continue with GitHub
+              }
+            </button>
+          </div>
+
+          <div class="guest-login">
+            <button
+              class="guest-btn"
+              (click)="continueAsGuest()"
+              [disabled]="isLoggingIn || isSigningUp"
+            >
+              Continue as Guest
+            </button>
+          </div>
+        </div>
+
+        @if (error) {
+          <div class="error-message">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="15" y1="9" x2="9" y2="15"/>
+              <line x1="9" y1="9" x2="15" y2="15"/>
+            </svg>
+            {{ error }}
+          </div>
+        }
+
+        @if (successMessage) {
+          <div class="success-message">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22,4 12,14.01 9,11.01"/>
+            </svg>
+            {{ successMessage }}
+          </div>
+        }
+      }
+    </div>
+
+    <div class="login-footer">
+      <p>
+        By continuing, you agree to our
+        <a href="/terms" target="_blank">Terms of Service</a> and
+        <a href="/privacy" target="_blank">Privacy Policy</a>.
+      </p>
+    </div>
+  </div>
+</div>

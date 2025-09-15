@@ -1,0 +1,106 @@
+<div class="admin-agents">
+  <div class="agents-header">
+    <h2>Agents & Tools</h2>
+    <p>Monitor and manage MCP agents and their available tools</p>
+  </div>
+
+  <div class="system-health">
+    <div class="health-card">
+      <div class="health-status" [class]="getHealthClass(systemHealth().status)">
+        <i class="icon-activity"></i>
+        <span>{{ getHealthText(systemHealth().status) }}</span>
+      </div>
+      <div class="health-info">
+        <p>Last checked: {{ formatTime(systemHealth().timestamp) }}</p>
+        @if (systemHealth().version) {
+          <p>Version: {{ systemHealth().version }}</p>
+        }
+      </div>
+      <button class="btn-refresh" (click)="refreshHealth()" [disabled]="isRefreshing()">
+        <i class="icon-refresh" [class.spinning]="isRefreshing()"></i>
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <div class="agents-container">
+    @if (isLoading()) {
+      <div class="loading">
+        <i class="icon-loader spinning"></i>
+        Loading agents...
+      </div>
+    } @else if (agents().length === 0) {
+      <div class="no-agents">
+        <i class="icon-cpu"></i>
+        <h3>No agents found</h3>
+        <p>No MCP agents are currently available</p>
+      </div>
+    } @else {
+      <div class="agents-grid">
+        @for (agent of agents(); track agent.name) {
+          <div class="agent-card">
+            <div class="agent-header">
+              <div class="agent-info">
+                <h3 class="agent-name">{{ formatAgentName(agent.name) }}</h3>
+                <div class="agent-status" [class]="getStatusClass(agent.status)">
+                  <i class="icon-circle"></i>
+                  <span>{{ getStatusText(agent.status) }}</span>
+                </div>
+              </div>
+              <div class="agent-stats">
+                <div class="stat-badge">
+                  <span class="count">{{ agent.toolCount }}</span>
+                  <span class="label">Tools</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tools-section">
+              <div class="tools-header">
+                <h4>Available Tools</h4>
+                <button
+                  class="btn-toggle"
+                  (click)="toggleTools(agent.name)"
+                  [class.expanded]="expandedAgents().has(agent.name)"
+                >
+                  <i class="icon-chevron-down"></i>
+                </button>
+              </div>
+
+              @if (expandedAgents().has(agent.name)) {
+                <div class="tools-list">
+                  @if (agent.tools.length === 0) {
+                    <p class="no-tools">No tools available</p>
+                  } @else {
+                    @for (tool of agent.tools; track tool) {
+                      <div class="tool-item">
+                        <i class="icon-tool"></i>
+                        <span class="tool-name">{{ formatToolName(tool) }}</span>
+                        <span class="tool-category">{{ getToolCategory(tool) }}</span>
+                      </div>
+                    }
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="tools-summary">
+    <h3>Tools Summary</h3>
+    <div class="summary-grid">
+      @for (category of toolCategories(); track category.name) {
+        <div class="category-card">
+          <div class="category-header">
+            <i [class]="category.icon"></i>
+            <h4>{{ category.name }}</h4>
+          </div>
+          <div class="category-count">{{ category.count }}</div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
