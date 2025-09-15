@@ -82,12 +82,12 @@ export class ImageModalComponent implements OnDestroy {
         link.download = this.generateFileName();
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
-        
+
         // Append to body, click, and remove
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         console.log('Download initiated'); // Debug log
       } catch (error) {
         console.error('Failed to download image:', error);

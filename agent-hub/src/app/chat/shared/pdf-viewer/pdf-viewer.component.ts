@@ -1,9 +1,9 @@
-import { 
-  ChangeDetectionStrategy, 
-  Component, 
-  input, 
-  output, 
-  signal, 
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
+  signal,
   inject,
   OnInit,
   effect
@@ -22,16 +22,16 @@ import { SafeUrlPipe } from '../../../shared/pipes/safe-url.pipe';
 })
 export class PdfViewerComponent implements OnInit {
   private fileService = inject(FileService);
-  
+
   fileId = input<string>('');
   fileName = input<string>('');
   isOpen = input<boolean>(false);
   close = output<void>();
-  
+
   isLoading = signal(true);
   error = signal<string | null>(null);
   fileUrl = signal<string | null>(null);
-  
+
   constructor() {
     // Effect to load PDF when file ID changes
     effect(() => {
@@ -41,7 +41,7 @@ export class PdfViewerComponent implements OnInit {
       }
     });
   }
-  
+
   ngOnInit() {
     // Load PDF if file ID is provided
     const fileId = this.fileId();
@@ -49,12 +49,12 @@ export class PdfViewerComponent implements OnInit {
       this.loadPdf(fileId);
     }
   }
-  
+
   async loadPdf(fileId: string) {
     this.isLoading.set(true);
     this.error.set(null);
     this.fileUrl.set(null);
-    
+
     try {
       const blob = await this.fileService.getFileContent(fileId);
       const url = URL.createObjectURL(blob);
@@ -66,7 +66,7 @@ export class PdfViewerComponent implements OnInit {
       this.isLoading.set(false);
     }
   }
-  
+
   onClose() {
     // Clean up object URL to prevent memory leaks
     const url = this.fileUrl();
@@ -76,11 +76,11 @@ export class PdfViewerComponent implements OnInit {
     }
     this.close.emit();
   }
-  
+
   onLoad() {
     this.isLoading.set(false);
   }
-  
+
   onError() {
     this.isLoading.set(false);
     this.error.set('Failed to load PDF preview');

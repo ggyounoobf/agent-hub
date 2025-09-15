@@ -9,7 +9,7 @@
   z-index: 9999;
   pointer-events: none; // Allow clicks through when modal is closed
   display: none; // Hide completely when not open
-  
+
   &.modal-open {
     display: block;
     pointer-events: all;
@@ -30,7 +30,7 @@
   padding: 2rem;
   z-index: 10000;
   cursor: pointer;
-  
+
   @media (max-width: 768px) {
     padding: 1rem;
   }
@@ -58,7 +58,7 @@
   padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--color-border-secondary);
   background: var(--color-bg-tertiary);
-  
+
   .modal-title {
     font-size: 1.125rem;
     font-weight: var(--font-weight-semibold);
@@ -69,7 +69,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  
+
   .close-button {
     background: var(--color-error);
     border: none;
@@ -84,16 +84,16 @@
     transition: all 0.2s ease;
     position: relative;
     z-index: 10002;
-    
+
     &:hover {
       background: #c62828;
       transform: scale(1.05);
     }
-    
+
     &:active {
       transform: scale(0.95);
     }
-    
+
     &:focus {
       outline: 2px solid var(--color-error);
       outline-offset: 2px;
@@ -109,14 +109,14 @@
   position: relative;
   min-height: 200px;
   background: var(--color-bg-primary);
-  
+
   .loading-placeholder {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     color: var(--color-text-secondary);
-    
+
     .loading-spinner {
       width: 40px;
       height: 40px;
@@ -126,13 +126,13 @@
       animation: spin 1s linear infinite;
       margin-bottom: 1rem;
     }
-    
+
     p {
       margin: 0;
       font-size: 0.875rem;
     }
   }
-  
+
   .modal-image {
     max-width: 100%;
     max-height: 70vh;
@@ -141,11 +141,11 @@
     object-fit: contain;
     opacity: 0;
     transition: opacity 0.3s ease;
-    
+
     &.loaded {
       opacity: 1;
     }
-    
+
     @media (max-width: 768px) {
       max-height: 60vh;
     }
@@ -160,7 +160,7 @@
   padding: 1rem 1.5rem;
   border-top: 1px solid var(--color-border-secondary);
   background: var(--color-bg-tertiary);
-  
+
   .action-button {
     display: flex;
     align-items: center;
@@ -176,46 +176,46 @@
     transition: all 0.2s ease;
     position: relative;
     z-index: 10002;
-    
+
     &:hover {
       background: var(--color-accent-secondary);
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(187, 134, 252, 0.3);
     }
-    
+
     &:active {
       transform: translateY(0);
     }
-    
+
     &:focus {
       outline: 2px solid var(--color-accent-primary);
       outline-offset: 2px;
     }
-    
+
     &.download-btn {
       background: var(--color-success);
-      
+
       &:hover {
         background: #45a049;
       }
     }
-    
+
     &.open-btn {
       background: var(--color-info);
-      
+
       &:hover {
         background: #1976d2;
       }
     }
-    
+
     span {
       font-weight: var(--font-weight-medium);
     }
-    
+
     @media (max-width: 768px) {
       padding: 0.75rem;
       font-size: 0.8rem;
-      
+
       // Keep text on mobile but make it smaller
       span {
         font-size: 0.75rem;

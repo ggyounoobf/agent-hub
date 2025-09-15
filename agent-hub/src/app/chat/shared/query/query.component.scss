@@ -20,26 +20,26 @@
       background: var(--color-bg-secondary);
       border: 1px solid var(--color-border-secondary);
       margin-left: 10%;
-      
+
       .message-container {
         background: var(--color-accent-primary);
         color: var(--color-bg-primary);
         border-radius: 18px 18px 4px 18px;
         padding: 0.875rem 1.125rem;
-        
+
         .msg {
           color: var(--color-bg-primary);
           font-weight: var(--font-weight-medium);
           margin: 0;
         }
       }
-      
+
       .vis {
         order: 2;
         margin-left: 1rem;
         margin-right: 0;
       }
-      
+
       @media (max-width: 768px) {
         margin-left: 5%;
       }
@@ -49,17 +49,17 @@
       background: var(--color-bg-tertiary);
       border: 1px solid var(--color-border-primary);
       margin-right: 10%;
-      
+
       .message-container {
         background: transparent;
         padding: 0.875rem 1.125rem;
         border-radius: 18px 18px 18px 4px;
-        
+
         .msg {
           margin: 0;
         }
       }
-      
+
       @media (max-width: 768px) {
         margin-right: 5%;
       }
@@ -76,7 +76,7 @@
       background: var(--color-bg-quaternary);
       border: 2px solid var(--color-border-primary);
       margin-right: 1rem;
-      
+
       ngx-icon {
         font-size: 1.5rem;
       }
@@ -106,42 +106,42 @@
       flex: 1;
       word-wrap: break-word;
       overflow-wrap: break-word;
-      
+
       // Enhanced typography
       font-size: 0.95rem;
-      
+
       // Better link styling
       a {
         color: var(--color-accent-secondary);
         text-decoration: none;
         border-bottom: 1px solid transparent;
         transition: all 0.2s ease;
-        
+
         &:hover {
           border-bottom-color: var(--color-accent-secondary);
         }
       }
     }
-    
+
     // Mobile optimizations
     @media (max-width: 768px) {
       padding: 0.75rem;
       margin-bottom: 1rem;
-      
+
       .vis {
         flex: 0 0 40px;
         height: 40px;
         margin-right: 0.75rem;
-        
+
         ngx-icon {
           font-size: 1.25rem;
         }
       }
-      
+
       .message-container {
         padding: 0.75rem 1rem;
       }
-      
+
       .msg {
         font-size: 0.9rem;
         line-height: 1.5;
@@ -154,13 +154,13 @@
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
   }
-  
+
   // Enhanced loading state for bot messages
   .bot .msg acb-query-skeleton {
     background: var(--color-bg-secondary);
     border-radius: 8px;
     overflow: hidden;
-    
+
     &::before {
       content: '';
       position: absolute;
@@ -234,7 +234,7 @@
     background: var(--color-bg-quaternary);
     border-color: var(--color-border-secondary);
   }
-  
+
   .row.user {
     background: rgba(187, 134, 252, 0.05);
     border-color: var(--color-accent-primary);

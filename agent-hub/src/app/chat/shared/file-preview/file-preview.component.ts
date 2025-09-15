@@ -1,8 +1,8 @@
-import { 
-  ChangeDetectionStrategy, 
-  Component, 
-  input, 
-  output, 
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  output,
   inject
 } from '@angular/core';
 import { IconComponent } from '@ngx-templates/shared/icon';
@@ -19,12 +19,12 @@ import { FileUploaded } from '../../../../model/query';
 })
 export class FilePreviewComponent {
   private fileService = inject(FileService);
-  
+
   chatId = input<string>('');
   queryId = input<string>('');
   filesUploaded = input<FileUploaded[]>([]);
   filePreview = output<FileInfo>();
-  
+
   async onFileClick(file: FileUploaded) {
     try {
       // Fetch the full file info using the file ID
@@ -36,7 +36,7 @@ export class FilePreviewComponent {
       alert(`Failed to load file "${file.name}". Please try again.`);
     }
   }
-  
+
   isPdfFile(fileName: string): boolean {
     return fileName.toLowerCase().endsWith('.pdf');
   }

@@ -11,16 +11,16 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class ChatIntroComponent {
   private _auth = inject(AuthService);
-  
+
   message = output<string>();
 
   predefinedMessages = PREDEFINED_MESSAGES;
-  
+
   // Get user's first name for personalized greeting
   userFirstName = computed(() => {
     const user = this._auth.user();
     if (!user) return 'there';
-    
+
     // Try to get first name from full_name, otherwise use username
     if (user.full_name) {
       return user.full_name.split(' ')[0];

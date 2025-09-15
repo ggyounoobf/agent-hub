@@ -25,7 +25,7 @@ describe('ImageModalComponent', () => {
   it('should not show modal when isOpen is false', () => {
     fixture.componentRef.setInput('isOpen', false);
     fixture.detectChanges();
-    
+
     const modalElement = fixture.nativeElement.querySelector('.image-modal-overlay');
     expect(modalElement).toBeFalsy();
   });
@@ -34,37 +34,37 @@ describe('ImageModalComponent', () => {
     fixture.componentRef.setInput('isOpen', true);
     fixture.componentRef.setInput('imageUrl', 'test-image.jpg');
     fixture.detectChanges();
-    
+
     const modalElement = fixture.nativeElement.querySelector('.image-modal-overlay');
     expect(modalElement).toBeTruthy();
   });
 
   it('should emit close event when close button is clicked', () => {
     spyOn(component.close, 'emit');
-    
+
     fixture.componentRef.setInput('isOpen', true);
     fixture.componentRef.setInput('imageUrl', 'test-image.jpg');
     fixture.detectChanges();
-    
+
     const closeButton = fixture.nativeElement.querySelector('.close-button');
     closeButton.click();
-    
+
     expect(component.close.emit).toHaveBeenCalled();
   });
 
   it('should emit close event when escape key is pressed', () => {
     spyOn(component.close, 'emit');
-    
+
     fixture.componentRef.setInput('isOpen', true);
     component.onEscapePressed();
-    
+
     expect(component.close.emit).toHaveBeenCalled();
   });
 
   it('should generate appropriate filename for download', () => {
     fixture.componentRef.setInput('imageTitle', 'My Chart');
     fixture.detectChanges();
-    
+
     const result = (component as any).generateFileName();
     expect(result).toContain('my_chart');
     expect(result).toContain('.png');

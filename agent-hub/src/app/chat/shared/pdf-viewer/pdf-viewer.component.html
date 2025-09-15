@@ -8,7 +8,7 @@
           <ngx-icon name="Close" size="lg" />
         </button>
       </div>
-      
+
       <div class="pdf-container">
         @if (isLoading()) {
           <div class="loading">
@@ -23,8 +23,8 @@
           </div>
         }
         @if (fileUrl(); as url) {
-          <iframe 
-            [src]="url | safeUrl" 
+          <iframe
+            [src]="url | safeUrl"
             class="pdf-iframe"
             (load)="onLoad()"
             (error)="onError()">

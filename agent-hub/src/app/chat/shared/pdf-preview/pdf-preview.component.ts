@@ -13,18 +13,18 @@ export class PdfPreviewComponent {
   fileName = input<string>('');
   isOpen = input<boolean>(false);
   close = output<void>();
-  
+
   isLoading = signal(true);
   error = signal<string | null>(null);
-  
+
   onClose() {
     this.close.emit();
   }
-  
+
   onLoad() {
     this.isLoading.set(false);
   }
-  
+
   onError() {
     this.isLoading.set(false);
     this.error.set('Failed to load PDF preview');
