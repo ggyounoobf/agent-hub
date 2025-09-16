@@ -599,6 +599,98 @@ cd mcp-tools-server && pytest tests/
 
 ## 📦 Production Deployment
 
+### GitHub Actions CI/CD Pipeline
+
+This repository includes a comprehensive CI/CD pipeline via GitHub Actions that:
+
+1. Runs code quality checks and security scans
+2. Builds and tests all services
+3. Creates Docker images for each service
+4. Pushes images to GitHub Container Registry (GHCR)
+5. Provides deployment notifications
+
+The pipeline is defined in `.github/workflows/ci-cd.yml` (in the repository root).
+
+### Deployment Options
+
+#### Option 1: Using Pre-built Images (Recommended)
+
+Follow the detailed deployment guide in [DEPLOYMENT.md](DEPLOYMENT.md) for step-by-step instructions.
+
+#### Option 2: Docker Compose
+
+Use the provided `docker-compose.yml` for orchestrated deployment:
+
+```yaml
+version: '3.8'
+
+services:
+  # MCP Tools Server
+  mcp-tools-server:
+    build:
+      context: ./mcp-tools-server
+      dockerfile: Dockerfile
+    image: mcp-tools-server:latest
+    container_name: mcp-tools-server
+    ports:
+      - "3001:3001"
+    networks:
+      - agent-hub-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Agent Hub API
+  agent-hub-api:
+    build:
+      context: ./agent-hub-api
+      dockerfile: Dockerfile
+    image: agent-hub-api:latest
+    container_name: agent-hub-api
+    ports:
+      - "8000:8000"
+    environment:
+      - MCP_TOOLS_SERVER_URL=http://mcp-tools-server:3001
+    env_file:
+      - .env
+    networks:
+      - agent-hub-network
+    depends_on:
+      mcp-tools-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Agent Hub Frontend
+  agent-hub:
+    build:
+      context: ./agent-hub
+      dockerfile: Dockerfile
+    image: agent-hub:latest
+    container_name: agent-hub
+    ports:
+      - "4200:80"
+    networks:
+      - agent-hub-network
+    depends_on:
+      agent-hub-api:
+        condition: service_healthy
+    # Environment variables for Angular at build time
+    environment:
+      - API_BASE_URL=/api
+
+networks:
+  agent-hub-network:
+    driver: bridge
+```
+
 ### Environment Variables Checklist
 
 - ✅ Azure OpenAI credentials configured
@@ -606,33 +698,6 @@ cd mcp-tools-server && pytest tests/
 - ✅ Authentication tokens generated
 - ✅ CORS settings configured
 - ✅ Production build optimizations enabled
-
-### Docker Compose (Optional)
-
-Create a `docker-compose.yml` for orchestrated deployment:
-
-```yaml
-version: '3.8'
-services:
-  mcp-tools:
-    build: ./mcp-tools-server
-    ports:
-      - "3001:3001"
-  
-  api:
-    build: ./agent-hub-api
-    ports:
-      - "8000:8000"
-    depends_on:
-      - mcp-tools
-  
-  frontend:
-    build: ./agent-hub
-    ports:
-      - "4200:4200"
-    depends_on:
-      - api
-```
 
 ---
 
