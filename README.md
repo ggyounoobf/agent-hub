@@ -617,7 +617,20 @@ The pipeline is defined in `.github/workflows/ci-cd.yml` (in the repository root
 
 Follow the detailed deployment guide in [DEPLOYMENT.md](DEPLOYMENT.md) for step-by-step instructions.
 
-#### Option 2: Docker Compose
+#### Option 2: Automated Deployment Script
+
+For production deployments to remote servers, you can use the provided `deploy.sh` script:
+
+```bash
+# Copy and configure environment file
+cp .env.prod.example .env.prod
+# Edit .env.prod with your production configuration
+
+# Run deployment
+./deploy.sh --host your-server.com --user deploy-user
+```
+
+#### Option 3: Docker Compose
 
 Use the provided `docker-compose.yml` for orchestrated deployment:
 
