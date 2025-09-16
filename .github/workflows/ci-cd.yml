@@ -52,6 +52,8 @@ jobs:
         working-directory: ./agent-hub-api
         run: |
           pip install uv
+          # Install with CPU-only torch if using PyTorch
+          uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --system
           uv pip install . --system
           # Add any linting or formatting checks here if available
 
@@ -60,6 +62,8 @@ jobs:
         working-directory: ./mcp-tools-server
         run: |
           pip install uv
+          # Install with CPU-only torch if using PyTorch
+          uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --system
           uv pip install . --system
           # Add any linting or formatting checks here if available
 
@@ -133,12 +137,16 @@ jobs:
         if: matrix.service == 'agent-hub-api'
         working-directory: ./agent-hub-api
         run: |
+          # Install CPU-only PyTorch first to avoid NVIDIA dependencies
+          uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --system
           uv pip install . --system
 
       - name: Install dependencies (mcp-tools-server)
         if: matrix.service == 'mcp-tools-server'
         working-directory: ./mcp-tools-server
         run: |
+          # Install CPU-only PyTorch first to avoid NVIDIA dependencies
+          uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu --system
           uv pip install . --system
 
       - name: Run tests (agent-hub)
@@ -225,6 +233,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            PYTORCH_INDEX_URL=https://download.pytorch.org/whl/cpu
 
   # Deploy to production (only on tag pushes)
   deploy:
