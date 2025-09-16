@@ -101,6 +101,29 @@ This guide explains how to deploy the Agent Hub platform using Docker and the pr
    docker-compose up -d --build
    ```
 
+### Option 3: Automated Deployment Script
+
+For production deployments to remote servers, you can use the provided deployment script:
+
+1. Copy the example production environment file:
+   ```bash
+   cp .env.prod.example .env.prod
+   ```
+
+2. Edit `.env.prod` with your production configuration
+
+3. Run the deployment script:
+   ```bash
+   ./deploy.sh --host your-server.com --user deploy-user
+   ```
+
+The script supports several options:
+- `--host HOST`: Remote host to deploy to
+- `--user USER`: Remote user for SSH connection
+- `--path PATH`: Remote path to deploy to
+- `--key KEY`: SSH key to use for authentication
+- `--env FILE`: Environment file to use
+
 ## Accessing the Services
 
 After deployment, you can access the services at:
@@ -111,7 +134,7 @@ After deployment, you can access the services at:
 
 ## GitHub Actions CI/CD Pipeline
 
-The GitHub Actions workflow (`ci-cd.yml`) in the repository root handles:
+The GitHub Actions workflow (`ci-cd.yml`) handles:
 
 1. Building and testing all services on every push/PR
 2. Creating Docker images for each service
