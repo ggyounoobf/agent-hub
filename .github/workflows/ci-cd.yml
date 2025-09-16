@@ -165,7 +165,7 @@ jobs:
         if: matrix.service == 'agent-hub'
         working-directory: ./agent-hub
         run: |
-          npm run build -- --prod
+          npm run build
 
       - name: Archive build artifacts
         if: matrix.service == 'agent-hub'
