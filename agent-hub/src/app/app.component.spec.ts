@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { fetchApiMockProvider } from './shared/utils/fetch-mock-provider.test-util';
@@ -8,7 +9,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
-      providers: [provideRouter([]), fetchApiMockProvider],
+      providers: [provideRouter([]), provideHttpClient(), fetchApiMockProvider],
     }).compileComponents();
   });
 
