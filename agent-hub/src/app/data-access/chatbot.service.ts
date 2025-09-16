@@ -217,7 +217,14 @@ export class ChatbotService {
     syncTotalCount: boolean = true,
   ) {
     this._chats.update((chats) => {
-      let chat = chats.get(chatId)!;
+      let chat = chats.get(chatId);
+      
+      // If chat doesn't exist, we can't update its queries
+      if (!chat) {
+        console.warn(`Attempted to update queries for non-existent chat ${chatId}`);
+        return chats;
+      }
+      
       let updatedQueries = updateFn(chat.queries);
       
       // Remove duplicate queries by ID
