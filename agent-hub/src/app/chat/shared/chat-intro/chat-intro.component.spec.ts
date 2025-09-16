@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChatIntroComponent } from './chat-intro.component';
+import { fetchApiMockProvider } from '../../../shared/utils/fetch-mock-provider.test-util';
 
 describe('ChatIntroComponent', () => {
   let component: ChatIntroComponent;
@@ -8,9 +9,10 @@ describe('ChatIntroComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChatIntroComponent]
+      imports: [ChatIntroComponent],
+      providers: [fetchApiMockProvider]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(ChatIntroComponent);
     component = fixture.componentInstance;
