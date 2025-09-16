@@ -52,7 +52,7 @@ jobs:
         working-directory: ./agent-hub-api
         run: |
           pip install uv
-          uv sync --frozen --no-dev
+          uv sync --frozen --no-dev --system
           # Add any linting or formatting checks here if available
 
       - name: Install dependencies and check code quality (mcp-tools-server)
@@ -60,7 +60,7 @@ jobs:
         working-directory: ./mcp-tools-server
         run: |
           pip install uv
-          uv pip install .
+          uv pip install . --system
           # Add any linting or formatting checks here if available
 
   # Security scanning
@@ -89,6 +89,7 @@ jobs:
         if: matrix.service == 'agent-hub-api' || matrix.service == 'mcp-tools-server'
         working-directory: ./${{ matrix.service }}
         run: |
+          pip install uv
           pip install safety
           # Run safety check on requirements if available
 
@@ -132,13 +133,13 @@ jobs:
         if: matrix.service == 'agent-hub-api'
         working-directory: ./agent-hub-api
         run: |
-          uv sync --frozen --no-dev
+          uv sync --frozen --no-dev --system
 
       - name: Install dependencies (mcp-tools-server)
         if: matrix.service == 'mcp-tools-server'
         working-directory: ./mcp-tools-server
         run: |
-          uv pip install .
+          uv pip install . --system
 
       - name: Run tests (agent-hub)
         if: matrix.service == 'agent-hub'
