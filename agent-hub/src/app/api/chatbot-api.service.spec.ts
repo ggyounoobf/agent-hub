@@ -69,7 +69,6 @@ describe('ChatbotApiService', () => {
     await chatbotApi.sendQuery(chat.id, 'Third message');
 
     const queries = await chatbotApi.getChatQueries(chat.id, {
-      pageSize: 10,
       page: 1,
     });
 
@@ -87,7 +86,6 @@ describe('ChatbotApiService', () => {
     await chatbotApi.sendQuery(chat.id, 'Third message');
 
     const queries = await chatbotApi.getChatQueries(chat.id, {
-      pageSize: 1,
       page: 3,
     });
 
