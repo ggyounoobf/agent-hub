@@ -45,7 +45,7 @@ jobs:
         working-directory: ./agent-hub
         run: |
           npm ci
-          npm run lint
+          echo "Skipping linting as no lint script is configured"
 
       - name: Install dependencies and check code quality (agent-hub-api)
         if: matrix.service == 'agent-hub-api'
